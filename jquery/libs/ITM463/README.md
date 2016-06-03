@@ -1,0 +1,2 @@
+# ITM463
+ITM 463 – Intermediate Web Application Development ~ In-depth examination of the concepts involved in the development of Internet applications. Students will learn the differences and similarities between Internet applications and traditional client/server applications. A discussion of the technologies involved in creating these Internet applications is included, and students will learn to use these technologies to create robust server-side applications.
