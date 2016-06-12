@@ -29,6 +29,7 @@ All `*px` style sheet values should be replaced with `*rem` values. Each value s
 
 On an _alternate front_, add logic to export selected accounts to CSV.
 
+
 #### Requirements
 
 Initially, the screen should:
@@ -37,11 +38,13 @@ Initially, the screen should:
     2. Contain a button
         a. If no rows are selected in the grid, clicking the button should do nothing
         b, If rows are selected a pop-up window containing a second grid populated with the selected rows should open
-    3. The modal pop-up should include an
+    3. The modal pop-up should include an CSV export ("download") button
+
 
 ### Published Version
 
-*   [plnkr.co](http://embed.plnkr.co/YTGESs/)
+*   [https://embed.plnkr.co/TRJ2x0/](https://embed.plnkr.co/TRJ2x0/)
+
 
 ### Tags
 
