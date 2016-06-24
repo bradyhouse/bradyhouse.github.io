@@ -1,7 +1,7 @@
 {
-  "name": "responsive-modal-popup",
+  "name": "fiddle",
   "version": "1.0.0",
-  "description": "fiddle-0039-ResponsiveModalPopUp",
+  "description": "fiddle",
   "main": "systemjs.config.js",
   "scripts": {
     "start": "live-server"
