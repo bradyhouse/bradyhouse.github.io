@@ -82,3 +82,7 @@ fiddles/python/fiddle-0009-*/*.json
 
 fiddles/node/fiddle-0013-*/cache/
 fiddles/node/fiddle-0013-*/*.bz2
+
+# under construction
+
+angular2/fiddle-0042-DeepLinks/
