@@ -147,6 +147,157 @@ class Util {
   }
 
   /**
+   * Utility method used generate a "values" string containing
+   * points along the circumference of a circle given the
+   * coordinates points and the radius.
+   *
+   * @param centerX
+   * @param centerY
+   * @param radius
+   * @param axis
+   * @returns {string}
+   */
+  static mapCircularPath(centerX, centerY, radius, axis) {
+      let _coor3pm = Util.mapCircularPoint(centerX, centerY, radius,0),
+      _coor4pm = Util.mapCircularPoint(centerX, centerY, radius, 30),
+      _coor5pm = Util.mapCircularPoint(centerX, centerY, radius, 60),
+      _coor6pm = Util.mapCircularPoint(centerX, centerY, radius, 90),
+      _coor7pm = Util.mapCircularPoint(centerX, centerY, radius, 120),
+      _coor8pm = Util.mapCircularPoint(centerX, centerY, radius, 150),
+      _coor9pm = Util.mapCircularPoint(centerX, centerY, radius, 180),
+      _coor10pm =Util.mapCircularPoint(centerX, centerY, radius, 210),
+      _coor11pm =Util.mapCircularPoint(centerX, centerY, radius, 240),
+      _coor12am = Util.mapCircularPoint(centerX, centerY, radius, 270),
+      _coor1am = Util.mapCircularPoint(centerX, centerY, radius, 300),
+      _coor2am = Util.mapCircularPoint(centerX, centerY, radius, 330);
+
+      return axis === 'x' || axis === 'y' ? _coor3pm[axis] + ';' +
+            _coor4pm[axis] + ';' +
+            _coor5pm[axis] + ';' +
+            _coor6pm[axis] + ';' +
+            _coor7pm[axis] + ';' +
+            _coor8pm[axis] + ';' +
+            _coor9pm[axis] + ';' +
+            _coor10pm[axis] + ';' +
+            _coor11pm[axis]  + ';' +
+            _coor12am[axis] + ';' +
+            _coor1am[axis]+ ';' +
+            _coor2am[axis] + ';' +
+            _coor3pm[axis]: '';
+
+  }
+
+  /**
+   * Utility method used generate an array containing
+   * points along the circumference of a circle given the
+   * center coordinates and radius. The optional degrees
+   * parameter can be used to set degree offset between
+   * each point.  By default, it uses 30 degrees.
+   *
+   * @param centerX
+   * @param centerY
+   * @param radius
+   * @param degrees (optional)
+   * @returns {Array}
+   */
+  static toCircularPointArray(centerX, centerY, radius, degrees) {
+
+    let coors = [],
+        angle = 0,
+        delta = degrees ? degrees : 30;
+
+    while(angle <= 360) {
+      coors.push(Util.mapCircularPoint(centerX, centerY, radius,angle));
+      angle+=delta;
+    }
+
+    return coors;
+  }
+
+  /**
+   * Utility method that can be used to convert an Array {x,y} points
+   * to a semicolon delimited string of either x or y values based
+   * on the value of the axis parameter.
+   * @param pointArray
+   * @param axis
+   * @returns {string}
+   */
+  static flattenToValues(pointArray, axis) {
+      let path = '';
+      if (pointArray.constructor === Array && pointArray.length) {
+        if (pointArray[0].hasOwnProperty(axis)) {
+          pointArray.map((point, index) => {
+            path += point[axis];
+            if (index < (pointArray.length-1)) {
+              path+=';';
+            }
+          });
+        }
+      }
+      return path;
+   }
+
+  static reorderFrom(pointArray, startIndex) {
+    var newArray = [],
+        startingPoint = {};
+
+      if (pointArray.constructor === Array && startIndex < pointArray.length) {
+        startingPoint.x = pointArray[startIndex].x;
+        startingPoint.y = pointArray[startIndex].y;
+        newArray.push({
+          x: startingPoint.x,
+          y: startingPoint.y
+        });
+        // top
+        pointArray.map((point,index) => {
+            if (index > startIndex) {
+            newArray.push({
+              x: point.x,
+              y: point.y
+            })
+          }
+        });
+        // bottom
+        pointArray.map((point,index) => {
+          if (index < startIndex) {
+            newArray.push({
+              x: point.x,
+              y: point.y
+            })
+          }
+        });
+      }
+
+      return newArray;
+  }
+
+  /**
+   * Utility method that can be used to pick a random
+   * point along a circle given array of the points
+   * that define its circumference.
+   *
+   * NOTE - This function was written to be used
+   * in concert with the toCircularPointArray method.
+   *
+   * @param circularPointArr
+   * @returns {{x: number, y: number}}
+   */
+  static pickRandomPoint(circularPointArr) {
+      let coor = {
+          x: 0,
+          y: 0
+        },
+        index = 0;
+
+      if (circularPointArr.constructor === Array) {
+        index = Util.rand(0, circularPointArr.length - 1);
+        coor = circularPointArr[index];
+      }
+
+      return coor;
+  }
+
+  /**
    * Utility Method that can be used to convert an angle
    * to it's radian equivalent.
    * @param angle

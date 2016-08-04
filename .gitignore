@@ -9,7 +9,7 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
-scripts/fiddle-publish.sh
+
 
 # Dependency directory
 # Commenting this out is preferred by some people, see
@@ -17,6 +17,8 @@ scripts/fiddle-publish.sh
 node_modules
 fiddle
 typings
+
+
 
 # Users Environment Variables
 .lock-wscript
@@ -81,8 +83,9 @@ fiddles/python/fiddle-0009-*/*.json
 
 
 # node fiddle 13 ~ [Issue 34](https://github.com/bradyhouse/house/issues/34)
-
 fiddles/node/fiddle-0013-*/cache/
 fiddles/node/fiddle-0013-*/*.bz2
 
-# under construction
+# tmp directory
+fiddles/svg/resources/json/
+
