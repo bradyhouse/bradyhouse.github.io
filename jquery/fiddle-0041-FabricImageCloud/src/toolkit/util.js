@@ -158,7 +158,7 @@ class Util {
    * @returns {string}
    */
   static mapCircularPath(centerX, centerY, radius, axis) {
-      let _coor3pm = Util.mapCircularPoint(centerX, centerY, radius,0),
+      var _coor3pm = Util.mapCircularPoint(centerX, centerY, radius,0),
       _coor4pm = Util.mapCircularPoint(centerX, centerY, radius, 30),
       _coor5pm = Util.mapCircularPoint(centerX, centerY, radius, 60),
       _coor6pm = Util.mapCircularPoint(centerX, centerY, radius, 90),
@@ -202,7 +202,7 @@ class Util {
    */
   static toCircularPointArray(centerX, centerY, radius, degrees) {
 
-    let coors = [],
+    var coors = [],
         angle = 0,
         delta = degrees ? degrees : 30;
 
@@ -223,10 +223,10 @@ class Util {
    * @returns {string}
    */
   static flattenToValues(pointArray, axis) {
-      let path = '';
+      var path = '';
       if (pointArray.constructor === Array && pointArray.length) {
         if (pointArray[0].hasOwnProperty(axis)) {
-          pointArray.map((point, index) => {
+          pointArray.map(function(point, index) {
             path += point[axis];
             if (index < (pointArray.length-1)) {
               path+=';';
@@ -249,7 +249,7 @@ class Util {
           y: startingPoint.y
         });
         // top
-        pointArray.map((point,index) => {
+        pointArray.map(function(point,index) {
             if (index > startIndex) {
             newArray.push({
               x: point.x,
@@ -258,7 +258,7 @@ class Util {
           }
         });
         // bottom
-        pointArray.map((point,index) => {
+        pointArray.map(function(point,index) {
           if (index < startIndex) {
             newArray.push({
               x: point.x,
@@ -283,7 +283,7 @@ class Util {
    * @returns {{x: number, y: number}}
    */
   static pickRandomPoint(circularPointArr) {
-      let coor = {
+      var coor = {
           x: 0,
           y: 0
         },

@@ -19,7 +19,7 @@ class Photo extends Base {
   }
 
   init() {
-    let title = this.json && this.json.hasOwnProperty('title') ? this.json.title : '',
+    var title = this.json && this.json.hasOwnProperty('title') ? this.json.title : '',
         mediaGroup = this.json && this.json.hasOwnProperty('media:group') ? this.json['media:group'] : null,
         mediaContent = mediaGroup && mediaGroup.hasOwnProperty('media:content') ? mediaGroup['media:content']: null,
         content = mediaContent && mediaContent.hasOwnProperty('$') ? mediaContent['$']: null;

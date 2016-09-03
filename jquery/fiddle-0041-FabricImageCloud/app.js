@@ -1,5 +1,6 @@
-(function (app) {
+(function(app) {
     "use strict";
+
 
     app.metadata = app.metadata || {
         consoleTag: 'H O U S E ~ f i d d l e s',
@@ -7,7 +8,9 @@
         dataUrl: 'data.json'
     };
 
+
     app.model = app.model || {};
+
 
     class Base {
         constructor(fabric) {
@@ -38,114 +41,218 @@
         }
     }
 
+
     class Util {
+        /**
+         * Static Method that can used to generate a
+         * random html color code.
+         *
+         * @returns {string}
+         */
         static color() {
-            var hex = "#",
-                i = 0;
-            for (; i < 6; i++) {
-                hex += Math.floor(Math.random() * 16).toString(16);
+                var hex = "#",
+                    i = 0;
+                for (; i < 6; i++) {
+                    hex += Math.floor(Math.random() * 16).toString(16);
+                }
+                return hex;
             }
-            return hex;
-        }
-
+            /**
+             * Static method that can be used to generate a random
+             * number within a given range.
+             *
+             * @param lbound
+             * @param ubound
+             * @returns {number}
+             */
         static rand(lbound, ubound) {
-            return Math.floor(Math.random() * (ubound - lbound + 1)) + lbound;
-        }
-
+                return Math.floor(Math.random() * (ubound - lbound + 1)) + lbound;
+            }
+            /**
+             * Collection of namespace strings used in the
+             * creation of svg elements.
+             *
+             * @returns {{xmlns: string, xmlnsXLink: string, xmlnsEv: string}}
+             */
         static xmlNamespaces() {
-            return {
-                xmlns: 'http://www.w3.org/2000/svg',
-                xmlnsXLink: 'http://www.w3.org/1999/xlink',
-                xmlnsEv: 'http://www.w3.org/2001/xml-events'
-            };
-        }
-
+                return {
+                    xmlns: 'http://www.w3.org/2000/svg',
+                    xmlnsXLink: 'http://www.w3.org/1999/xlink',
+                    xmlnsEv: 'http://www.w3.org/2001/xml-events'
+                }
+            }
+            /**
+             * Utility method that can be used to get a given attribute (field) from a given doc
+             * element and split its value into a string array. If
+             * the element does not have the requested attribute, then
+             * the provided default value (valDef) is split and returned.
+             *
+             * @param field
+             * @param id
+             * @param valDef
+             * @returns {Array}
+             */
         static splitAttribute(field, id, valDef) {
-            var docElement = document.getElementById(id);
-            if (docElement && docElement.getAttribute(field)) {
-                return docElement.getAttribute(field).split(/[,\(\)]/);
+                var docElement = document.getElementById(id);
+                if (docElement && docElement.getAttribute(field)) {
+                    return docElement.getAttribute(field).split(/[,\(\)]/);
+                }
+                return valDef.split(/[,\(\)]/);
             }
-            return valDef.split(/[,\(\)]/);
-        }
-
+            /**
+             * Utility method that can be used to "pop" a given parameter from
+             * a given url.  NOTE - To get a query string parameter value, pass
+             * in "location.search".
+             *
+             * @param parameter
+             * @param url
+             * @returns {string}
+             */
         static mapFromQueryString(url, parameter) {
-            var name = parameter.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"),
-                regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                value = regex.exec(url);
-            return value === null ? "" : decodeURIComponent(value[1].replace(/\+/g, " "));
-        }
-
+                var name = parameter.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"),
+                    regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    value = regex.exec(url);
+                return value === null ? "" : decodeURIComponent(value[1].replace(/\+/g, " "));
+            }
+            /**
+             * Utility method that can be used to hide a given object.
+             *
+             * @param obj
+             */
         static hide(obj) {
-            obj.setAttribute('visibility', 'hidden');
-        }
-
+                obj.setAttribute('visibility', 'hidden');
+            }
+            /**
+             * Utility method that can be used to darken a given hex color by
+             * given percentage ("lum").  This method was
+             * lifted from http://www.sitepoint.com/javascript-generate-lighter-darker-color/.
+             *
+             * @param hex
+             * @param lum
+             * @returns {string}
+             */
         static darkenColor(hex, lum) {
-            hex = String(hex).replace(/[^0-9a-f]/gi, '');
-            if (hex.length < 6) {
-                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+                // validate hex string
+                hex = String(hex).replace(/[^0-9a-f]/gi, '');
+                if (hex.length < 6) {
+                    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+                }
+                lum = lum || 0;
+                // convert to decimal and change luminosity
+                var rgb = "#",
+                    c, i;
+                for (i = 0; i < 3; i++) {
+                    c = parseInt(hex.substr(i * 2, 2), 16);
+                    c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+                    rgb += ("00" + c).substr(c.length);
+                }
+                return rgb;
             }
-            lum = lum || 0;
-
-            var rgb = "#",
-                c,
-                i;
-            for (i = 0; i < 3; i++) {
-                c = parseInt(hex.substr(i * 2, 2), 16);
-                c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
-                rgb += ("00" + c).substr(c.length);
-            }
-            return rgb;
-        }
-
+            /**
+             * Utility method that can be used to calculate a point
+             * along the circumference of a circle. The method is based
+             * on the established parametric equations (below).  It
+             * returns an object containing the calculated x,y coordinates.
+             *
+             *  x = cx + r * cos(a)
+             *  y = cy + r * sin(a)
+             *
+             * @param centerX
+             * @param centerY
+             * @param radius
+             * @param angle
+             * @returns {{x: number, y: number}}
+             */
         static mapCircularPoint(centerX, centerY, radius, angle) {
-            var coorX = 0,
-                coorY = 0;
-            try {
-                coorX = Math.round(centerX + radius * Math.cos(Util.convertToRadians(angle)));
-                coorY = Math.round(centerY + radius * Math.sin(Util.convertToRadians(angle)));
-            } catch (err) {
-                console.log(err.stackTrace);
+                var coorX = 0,
+                    coorY = 0;
+                try {
+                    coorX = Math.round(centerX + (radius * Math.cos(Util.convertToRadians(angle))));
+                    coorY = Math.round(centerY + (radius * Math.sin(Util.convertToRadians(angle))));
+                } catch (err) {
+                    console.log(err.stackTrace);
+                }
+                return {
+                    x: coorX,
+                    y: coorY
+                }
             }
-            return {
-                x: coorX,
-                y: coorY
-            };
-        }
-
+            /**
+             * Utility method used generate a "values" string containing
+             * points along the circumference of a circle given the
+             * coordinates points and the radius.
+             *
+             * @param centerX
+             * @param centerY
+             * @param radius
+             * @param axis
+             * @returns {string}
+             */
         static mapCircularPath(centerX, centerY, radius, axis) {
-            var _coor3pm = Util.mapCircularPoint(centerX, centerY, radius, 0),
-                _coor4pm = Util.mapCircularPoint(centerX, centerY, radius, 30),
-                _coor5pm = Util.mapCircularPoint(centerX, centerY, radius, 60),
-                _coor6pm = Util.mapCircularPoint(centerX, centerY, radius, 90),
-                _coor7pm = Util.mapCircularPoint(centerX, centerY, radius, 120),
-                _coor8pm = Util.mapCircularPoint(centerX, centerY, radius, 150),
-                _coor9pm = Util.mapCircularPoint(centerX, centerY, radius, 180),
-                _coor10pm = Util.mapCircularPoint(centerX, centerY, radius, 210),
-                _coor11pm = Util.mapCircularPoint(centerX, centerY, radius, 240),
-                _coor12am = Util.mapCircularPoint(centerX, centerY, radius, 270),
-                _coor1am = Util.mapCircularPoint(centerX, centerY, radius, 300),
-                _coor2am = Util.mapCircularPoint(centerX, centerY, radius, 330);
-            return axis === 'x' || axis === 'y' ? _coor3pm[axis] + ';' + _coor4pm[axis] + ';' + _coor5pm[axis] + ';' + _coor6pm[axis] + ';' + _coor7pm[axis] + ';' + _coor8pm[axis] + ';' + _coor9pm[axis] + ';' + _coor10pm[axis] + ';' + _coor11pm[axis] + ';' + _coor12am[axis] + ';' + _coor1am[axis] + ';' + _coor2am[axis] + ';' + _coor3pm[axis] : '';
-        }
-
-        static toCircularPointArray(centerX, centerY, radius, degrees) {
-            var coors = [],
-                angle = 0,
-                delta = degrees ? degrees : 30;
-            while (angle <= 360) {
-                coors.push(Util.mapCircularPoint(centerX, centerY, radius, angle));
-                angle += delta;
+                var _coor3pm = Util.mapCircularPoint(centerX, centerY, radius, 0),
+                    _coor4pm = Util.mapCircularPoint(centerX, centerY, radius, 30),
+                    _coor5pm = Util.mapCircularPoint(centerX, centerY, radius, 60),
+                    _coor6pm = Util.mapCircularPoint(centerX, centerY, radius, 90),
+                    _coor7pm = Util.mapCircularPoint(centerX, centerY, radius, 120),
+                    _coor8pm = Util.mapCircularPoint(centerX, centerY, radius, 150),
+                    _coor9pm = Util.mapCircularPoint(centerX, centerY, radius, 180),
+                    _coor10pm = Util.mapCircularPoint(centerX, centerY, radius, 210),
+                    _coor11pm = Util.mapCircularPoint(centerX, centerY, radius, 240),
+                    _coor12am = Util.mapCircularPoint(centerX, centerY, radius, 270),
+                    _coor1am = Util.mapCircularPoint(centerX, centerY, radius, 300),
+                    _coor2am = Util.mapCircularPoint(centerX, centerY, radius, 330);
+                return axis === 'x' || axis === 'y' ? _coor3pm[axis] + ';' +
+                    _coor4pm[axis] + ';' +
+                    _coor5pm[axis] + ';' +
+                    _coor6pm[axis] + ';' +
+                    _coor7pm[axis] + ';' +
+                    _coor8pm[axis] + ';' +
+                    _coor9pm[axis] + ';' +
+                    _coor10pm[axis] + ';' +
+                    _coor11pm[axis] + ';' +
+                    _coor12am[axis] + ';' +
+                    _coor1am[axis] + ';' +
+                    _coor2am[axis] + ';' +
+                    _coor3pm[axis] : '';
             }
-            return coors;
-        }
-
+            /**
+             * Utility method used generate an array containing
+             * points along the circumference of a circle given the
+             * center coordinates and radius. The optional degrees
+             * parameter can be used to set degree offset between
+             * each point.  By default, it uses 30 degrees.
+             *
+             * @param centerX
+             * @param centerY
+             * @param radius
+             * @param degrees (optional)
+             * @returns {Array}
+             */
+        static toCircularPointArray(centerX, centerY, radius, degrees) {
+                var coors = [],
+                    angle = 0,
+                    delta = degrees ? degrees : 30;
+                while (angle <= 360) {
+                    coors.push(Util.mapCircularPoint(centerX, centerY, radius, angle));
+                    angle += delta;
+                }
+                return coors;
+            }
+            /**
+             * Utility method that can be used to convert an Array {x,y} points
+             * to a semicolon delimited string of either x or y values based
+             * on the value of the axis parameter.
+             * @param pointArray
+             * @param axis
+             * @returns {string}
+             */
         static flattenToValues(pointArray, axis) {
             var path = '';
             if (pointArray.constructor === Array && pointArray.length) {
                 if (pointArray[0].hasOwnProperty(axis)) {
                     pointArray.map(function(point, index) {
                         path += point[axis];
-                        if (index < pointArray.length - 1) {
+                        if (index < (pointArray.length - 1)) {
                             path += ';';
                         }
                     });
@@ -154,55 +261,75 @@
             return path;
         }
         static reorderFrom(pointArray, startIndex) {
-            var newArray = [],
-                startingPoint = {};
-            if (pointArray.constructor === Array && startIndex < pointArray.length) {
-                startingPoint.x = pointArray[startIndex].x;
-                startingPoint.y = pointArray[startIndex].y;
-                newArray.push({
-                    x: startingPoint.x,
-                    y: startingPoint.y
-                });
-
-                pointArray.map(function(point, index) {
-                    if (index > startIndex) {
-                        newArray.push({
-                            x: point.x,
-                            y: point.y
-                        });
-                    }
-                });
-
-                pointArray.map(function(point, index) {
-                    if (index < startIndex) {
-                        newArray.push({
-                            x: point.x,
-                            y: point.y
-                        });
-                    }
-                });
+                var newArray = [],
+                    startingPoint = {};
+                if (pointArray.constructor === Array && startIndex < pointArray.length) {
+                    startingPoint.x = pointArray[startIndex].x;
+                    startingPoint.y = pointArray[startIndex].y;
+                    newArray.push({
+                        x: startingPoint.x,
+                        y: startingPoint.y
+                    });
+                    // top
+                    pointArray.map(function(point, index) {
+                        if (index > startIndex) {
+                            newArray.push({
+                                x: point.x,
+                                y: point.y
+                            })
+                        }
+                    });
+                    // bottom
+                    pointArray.map(function(point, index) {
+                        if (index < startIndex) {
+                            newArray.push({
+                                x: point.x,
+                                y: point.y
+                            })
+                        }
+                    });
+                }
+                return newArray;
             }
-            return newArray;
-        }
-
+            /**
+             * Utility method that can be used to pick a random
+             * point along a circle given array of the points
+             * that define its circumference.
+             *
+             * NOTE - This function was written to be used
+             * in concert with the toCircularPointArray method.
+             *
+             * @param circularPointArr
+             * @returns {{x: number, y: number}}
+             */
         static pickRandomPoint(circularPointArr) {
-            var coor = {
-                x: 0,
-                y: 0
-            },
-                index = 0;
-            if (circularPointArr.constructor === Array) {
-                index = Util.rand(0, circularPointArr.length - 1);
-                coor = circularPointArr[index];
+                var coor = {
+                        x: 0,
+                        y: 0
+                    },
+                    index = 0;
+                if (circularPointArr.constructor === Array) {
+                    index = Util.rand(0, circularPointArr.length - 1);
+                    coor = circularPointArr[index];
+                }
+                return coor;
             }
-            return coor;
-        }
-
+            /**
+             * Utility Method that can be used to convert an angle
+             * to it's radian equivalent.
+             * @param angle
+             * @returns {number}
+             */
         static convertToRadians(angle) {
             return angle * (Math.PI / 180);
         }
     }
 
+
+    /**
+     * Wrapper class for the fabric.Canvas.
+     * @see http://fabricjs.com/docs/fabric.Canvas.html
+     */
     class Canvas extends Base {
         config() {
             return {
@@ -227,8 +354,9 @@
             });
             if (canvas) {
                 if (this.children && this.children.length) {
-                    this.children.map(function(child) {
+                    this.children.map((child) => {
                         if (child.fabric) {
+                            // ToDo: Report Bug
                             child.fabric.setHeight(child.height);
                             canvas.add(child.fabric);
                         }
@@ -239,6 +367,11 @@
         }
     }
 
+
+    /**
+     * Wrapper class for the fabric.Image.
+     * @see http://fabricjs.com/docs/fabric.Image.html
+     */
     class Image extends Base {
         config() {
             return {
@@ -250,7 +383,7 @@
                 opacity: 1,
                 autoBind: false,
                 imageLoad: null
-            };
+            }
         }
         constructor(config) {
             super();
@@ -267,7 +400,7 @@
         init() {
             var self = this;
             if (this.url) {
-                fabric.Image.fromURL(this.url, function (oImg) {
+                fabric.Image.fromURL(this.url, function(oImg) {
                     oImg.setWidth(self.width);
                     oImg.setHeight(self.height);
                     oImg.setLeft(self.left);
@@ -285,6 +418,7 @@
         }
     }
 
+
     class Photo extends Base {
         get config() {
             return {
@@ -293,7 +427,7 @@
                 width: '0',
                 height: '0',
                 json: null
-            };
+            }
         }
         constructor(config) {
             super();
@@ -316,12 +450,13 @@
         }
     }
 
+
     class PhotoAlbum extends Base {
         get config() {
             return {
                 json: null,
                 children: []
-            };
+            }
         }
         constructor(config) {
             super();
@@ -338,7 +473,7 @@
                             this.json.rss.channel.item.map(function(item) {
                                 this.children.push(new Photo({
                                     json: item
-                                }));
+                                }))
                             }, this);
                         }
                     }
@@ -347,8 +482,9 @@
         }
     }
 
+
     app.controller = app.controller || {
-        onDOMContentLoaded: function () {
+        onDOMContentLoaded: function() {
             try {
                 console.log("%c" + app.metadata.consoleTag, 'font-style: italic; font-size: 20px;');
                 console.log("%c" + app.metadata.gitHubUrl, "color: blue; font-style: italic; text-decoration: underline; background-color: #FFFF00;");
@@ -358,7 +494,7 @@
                 document.write(JSON.stringify(err));
             }
         },
-        onAjaxComplete: function (event, xhr, settings) {
+        onAjaxComplete: function(event, xhr, settings) {
             if (settings.url === app.metadata.dataUrl) {
                 app.model.PhotoAlbum = new PhotoAlbum({
                     json: JSON.parse(xhr.responseText)
@@ -368,12 +504,12 @@
                 }, 500);
             }
         },
-        init: function () {
+        init: function() {
             var objects = [],
                 center = {
-                x: $(document).width() / 2,
-                y: $(document).height() / 2
-            };
+                    x: $(document).width() / 2,
+                    y: $(document).height() / 2,
+                };
             app.model.PhotoAlbum.children.map(function(photo, index) {
                 var radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
                     randX = Util.rand(0, $(document).width()),
@@ -384,8 +520,8 @@
                     startingPoint = circularPathArr[startingIndex];
                 objects.push(new Image({
                     id: photo.title,
-                    width: objects.length % 4 === 0 ? Math.floor(+photo.width / 4) : Math.floor(+photo.width / 6),
-                    height: objects.length % 4 === 0 ? Math.floor(+photo.height / 4) : Math.floor(+photo.height / 6),
+                    width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 4) : Math.floor((+photo.width) / 6),
+                    height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 4) : Math.floor((+photo.height) / 6),
                     left: startingPoint.x,
                     top: startingPoint.y,
                     url: photo.url,
@@ -399,13 +535,13 @@
                 children: objects
             });
         },
-        onImageLoad: function (image) {
+        onImageLoad: function(image) {
             if (app.controller.canvas) {
                 app.controller.canvas.fabric.add(image);
             }
         }
     };
-    $(document).ready(function () {
+    $(document).ready(function() {
         app.controller.onDOMContentLoaded();
     });
-})(window.app = window.app || {});
+})(window.app = window.app || {})

@@ -14,21 +14,21 @@ app.controller = app.controller || {
         app.model.PhotoAlbum = new PhotoAlbum({
           json: JSON.parse(xhr.responseText)
         });
-        window.setTimeout(() => {
+        window.setTimeout(function() {
           app.controller.init();
         }, 500);
       }
     },
     init: function () {
 
-      let objects = [],
+      var objects = [],
         center = {
           x: $(document).width() / 2,
           y: $(document).height() / 2,
         };
 
-      app.model.PhotoAlbum.children.map((photo, index) => {
-        let radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
+      app.model.PhotoAlbum.children.map(function(photo, index) {
+        var radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
           randX = Util.rand(0, $(document).width()),
           randY = Util.rand(0, $(document).height()),
           dur = Util.rand(120, 240) + 's',

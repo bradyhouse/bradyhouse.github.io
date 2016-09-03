@@ -32,7 +32,7 @@ class Image extends Base {
   }
 
   init() {
-    let self = this;
+    var self = this;
     if (this.url) {
       fabric.Image.fromURL(this.url, function(oImg) {
         oImg.setWidth(self.width);
