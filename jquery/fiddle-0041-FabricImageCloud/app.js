@@ -18,7 +18,7 @@
                 this.apply(object, defaults);
             }
             if (object && config && typeof config === 'object') {
-                let property;
+                var property;
                 for (property in config) {
                     if (config[property]) {
                         object[property] = config[property];
@@ -113,7 +113,7 @@
         }
 
         static mapCircularPath(centerX, centerY, radius, axis) {
-            let _coor3pm = Util.mapCircularPoint(centerX, centerY, radius, 0),
+            var _coor3pm = Util.mapCircularPoint(centerX, centerY, radius, 0),
                 _coor4pm = Util.mapCircularPoint(centerX, centerY, radius, 30),
                 _coor5pm = Util.mapCircularPoint(centerX, centerY, radius, 60),
                 _coor6pm = Util.mapCircularPoint(centerX, centerY, radius, 90),
@@ -129,7 +129,7 @@
         }
 
         static toCircularPointArray(centerX, centerY, radius, degrees) {
-            let coors = [],
+            var coors = [],
                 angle = 0,
                 delta = degrees ? degrees : 30;
             while (angle <= 360) {
@@ -140,7 +140,7 @@
         }
 
         static flattenToValues(pointArray, axis) {
-            let path = '';
+            var path = '';
             if (pointArray.constructor === Array && pointArray.length) {
                 if (pointArray[0].hasOwnProperty(axis)) {
                     pointArray.map((point, index) => {
@@ -186,7 +186,7 @@
         }
 
         static pickRandomPoint(circularPointArr) {
-            let coor = {
+            var coor = {
                 x: 0,
                 y: 0
             },
@@ -221,7 +221,7 @@
             this.init();
         }
         init() {
-            let canvas = new fabric.Canvas(this.hook, {
+            var canvas = new fabric.Canvas(this.hook, {
                 width: this.width,
                 height: this.height
             });
@@ -265,7 +265,7 @@
             }
         }
         init() {
-            let self = this;
+            var self = this;
             if (this.url) {
                 fabric.Image.fromURL(this.url, function (oImg) {
                     oImg.setWidth(self.width);
@@ -303,7 +303,7 @@
             this.init();
         }
         init() {
-            let title = this.json && this.json.hasOwnProperty('title') ? this.json.title : '',
+            var title = this.json && this.json.hasOwnProperty('title') ? this.json.title : '',
                 mediaGroup = this.json && this.json.hasOwnProperty('media:group') ? this.json['media:group'] : null,
                 mediaContent = mediaGroup && mediaGroup.hasOwnProperty('media:content') ? mediaGroup['media:content'] : null,
                 content = mediaContent && mediaContent.hasOwnProperty('$') ? mediaContent['$'] : null;
@@ -369,13 +369,13 @@
             }
         },
         init: function () {
-            let objects = [],
+            var objects = [],
                 center = {
                 x: $(document).width() / 2,
                 y: $(document).height() / 2
             };
             app.model.PhotoAlbum.children.map((photo, index) => {
-                let radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
+                var radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
                     randX = Util.rand(0, $(document).width()),
                     randY = Util.rand(0, $(document).height()),
                     dur = Util.rand(120, 240) + 's',
