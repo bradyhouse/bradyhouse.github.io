@@ -8,7 +8,7 @@ class PhotoAlbum extends Base {
       }
   }
 
-  constructor(config = null) {
+  constructor(config) {
     super();
     if (config) {
       this.apply(this, config, this.config);

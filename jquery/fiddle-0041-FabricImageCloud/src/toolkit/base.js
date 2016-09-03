@@ -1,4 +1,9 @@
 class Base {
+
+  constructor(fabric = null) {
+    this._fabric = fabric;
+  }
+
   apply(object, config, defaults) {
     if (defaults) {
       this.apply(object, defaults);
@@ -13,4 +18,17 @@ class Base {
     }
     return object;
   }
+
+  get fabric() {
+    return this._fabric;
+  }
+
+  set fabric(value) {
+    this._fabric = value;
+  }
+
+  hasOwnMethod(method) {
+    return typeof this[method] === 'function' ? true : false;
+  }
+
 }

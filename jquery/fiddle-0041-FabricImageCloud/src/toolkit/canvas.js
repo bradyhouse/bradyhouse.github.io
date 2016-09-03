@@ -1,61 +1,43 @@
 /**
  * Wrapper class for the fabric.Canvas.
- * @link {http://fabricjs.com/docs/fabric.Canvas.html}
+ * @see http://fabricjs.com/docs/fabric.Canvas.html
  */
 
 class Canvas extends Base {
-
   config() {
     return {
       hook: 'canvas1',
-      children: null
+      children: [],
+      backgroundColor: 'rgb(100,100,200)',
+      width: 500,
+      height: 500
     };
   }
-
-  constructor(config) {
+  constructor(config=null) {
     super();
     if (config) {
       this.apply(this, config, this.config());
     }
     this.init();
   }
-
-  /**
-   * Method used to append the docElement to
-   * configured hook element.
-   */
-  bind() {
-    if (this.hook && this.docElementNS) {
-      this.hook.appendChild(this.docElementNS);
-    }
-  }
-
-  /**
-   * Method called by the constructor to create
-   * and assign docElement based
-   * on the properties exposed by the class.
-   *
-   * Note - if the autoBind flag is true,
-   * then it ends by invoking bind method.
-   */
   init() {
+    let canvas = new fabric.Canvas(this.hook, {
+      width: this.width,
+      height: this.height
+    });
 
+    if(canvas) {
+      if (this.children && this.children.length) {
+        this.children.map((child) => {
 
-
-
-    if (this.children && this.children.length) {
-      this.children.map((child) => {
-        child.parent = this;
-        if (child.docElementNS) {
-          this.docElementNS.appendChild(child.docElementNS);
-        }
-      });
-    }
-
-    if (this.autoBind) {
-      this.bind();
+          if (child.fabric) {
+            // ToDo: Report Bug
+            child.fabric.setHeight(child.height);
+            canvas.add(child.fabric);
+          }
+        });
+      }
+      this.fabric = canvas;
     }
   }
-
-
 }
