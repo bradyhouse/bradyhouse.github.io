@@ -143,7 +143,7 @@
             var path = '';
             if (pointArray.constructor === Array && pointArray.length) {
                 if (pointArray[0].hasOwnProperty(axis)) {
-                    pointArray.map((point, index) => {
+                    pointArray.map(function(point, index) {
                         path += point[axis];
                         if (index < pointArray.length - 1) {
                             path += ';';
@@ -164,7 +164,7 @@
                     y: startingPoint.y
                 });
 
-                pointArray.map((point, index) => {
+                pointArray.map(function(point, index) {
                     if (index > startIndex) {
                         newArray.push({
                             x: point.x,
@@ -173,7 +173,7 @@
                     }
                 });
 
-                pointArray.map((point, index) => {
+                pointArray.map(function(point, index) {
                     if (index < startIndex) {
                         newArray.push({
                             x: point.x,
@@ -227,7 +227,7 @@
             });
             if (canvas) {
                 if (this.children && this.children.length) {
-                    this.children.map(child => {
+                    this.children.map(function(child) {
                         if (child.fabric) {
                             child.fabric.setHeight(child.height);
                             canvas.add(child.fabric);
@@ -335,7 +335,7 @@
                 if (this.json.rss) {
                     if (this.json.rss.channel) {
                         if (this.json.rss.channel.item) {
-                            this.json.rss.channel.item.map(item => {
+                            this.json.rss.channel.item.map(function(item) {
                                 this.children.push(new Photo({
                                     json: item
                                 }));
@@ -363,7 +363,7 @@
                 app.model.PhotoAlbum = new PhotoAlbum({
                     json: JSON.parse(xhr.responseText)
                 });
-                window.setTimeout(() => {
+                window.setTimeout(function() {
                     app.controller.init();
                 }, 500);
             }
@@ -374,7 +374,7 @@
                 x: $(document).width() / 2,
                 y: $(document).height() / 2
             };
-            app.model.PhotoAlbum.children.map((photo, index) => {
+            app.model.PhotoAlbum.children.map(function(photo, index) {
                 var radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
                     randX = Util.rand(0, $(document).width()),
                     randY = Util.rand(0, $(document).height()),
