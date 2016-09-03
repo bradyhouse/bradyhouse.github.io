@@ -64,7 +64,9 @@ app.controller = app.controller || {
 
   };
 
-document.addEventListener('onload', app.controller.onDOMContentLoaded(), false);
+$(document).ready(function () {
+  app.controller.onDOMContentLoaded();
+});
 
 
 

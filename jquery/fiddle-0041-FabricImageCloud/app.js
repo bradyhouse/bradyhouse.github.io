@@ -541,5 +541,7 @@
             }
         }
     };
-    document.addEventListener('onload', app.controller.onDOMContentLoaded(), false);
+    $(document).ready(function() {
+        app.controller.onDOMContentLoaded();
+    });
 })(window.app = window.app || {})
