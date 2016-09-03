@@ -54,7 +54,6 @@ app.controller = app.controller || {
     },
 
     onImageLoad: function(image) {
-       console.log(arguments);
       if (app.controller.canvas) {
         app.controller.canvas.fabric.add(image);
       }
