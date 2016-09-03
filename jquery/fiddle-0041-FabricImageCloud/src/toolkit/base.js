@@ -1,7 +1,7 @@
 class Base {
 
-  constructor(fabric = null) {
-    this._fabric = fabric;
+  constructor(fabric) {
+    this._fabric = fabric ? fabric : null;
   }
 
   apply(object, config, defaults) {

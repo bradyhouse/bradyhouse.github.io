@@ -13,7 +13,7 @@ class Canvas extends Base {
       height: 500
     };
   }
-  constructor(config=null) {
+  constructor(config) {
     super();
     if (config) {
       this.apply(this, config, this.config());
