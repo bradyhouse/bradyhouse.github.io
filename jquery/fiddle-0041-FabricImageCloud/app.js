@@ -339,7 +339,7 @@
                                 this.children.push(new Photo({
                                     json: item
                                 }));
-                            });
+                            }, this);
                         }
                     }
                 }
