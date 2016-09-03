@@ -520,8 +520,8 @@
                     startingPoint = circularPathArr[startingIndex];
                 objects.push(new Image({
                     id: photo.title,
-                    width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 2) : Math.floor((+photo.width) / 3),
-                    height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 2) : Math.floor((+photo.height) / 3),
+                    width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 4) : Math.floor((+photo.width) / 6),
+                    height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 4) : Math.floor((+photo.height) / 6),
                     left: startingPoint.x,
                     top: startingPoint.y,
                     url: photo.url,
