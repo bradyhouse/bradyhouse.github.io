@@ -354,14 +354,19 @@
             });
             if (canvas) {
                 if (this.children && this.children.length) {
-                    this.children.map((child) => {
+                    this.children.map(function(child) {
                         if (child.fabric) {
                             // ToDo: Report Bug
                             child.fabric.setHeight(child.height);
                             canvas.add(child.fabric);
                         }
-                    });
+                    }, canvas);
                 }
+                canvas.on('mouse:down', function(options) {
+                    if (options.target) {
+                        console.log('an object was clicked! ', options.target.type);
+                    }
+                });
                 this.fabric = canvas;
             }
         }

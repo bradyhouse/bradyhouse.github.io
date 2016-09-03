@@ -40,6 +40,7 @@ class Image extends Base {
         oImg.setLeft(self.left);
         oImg.setTop(self.top);
         oImg.setOpacity(self.opacity);
+
         self.fabric = oImg;
         if (self.autoBind) {
           self.bind();
