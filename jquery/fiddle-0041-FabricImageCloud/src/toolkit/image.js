@@ -37,9 +37,9 @@ class Image extends Base {
       fabric.Image.fromURL(this.url, function(oImg) {
         oImg.setWidth(self.width);
         oImg.setHeight(self.height);
-        //oImg.setLeft(self.left);
-        //oImg.setTop(self.top);
-        //oImg.setOpacity(self.opacity);
+        oImg.setLeft(self.left);
+        oImg.setTop(self.top);
+        oImg.setOpacity(self.opacity);
         self.fabric = oImg;
         if (self.autoBind) {
           self.bind();
