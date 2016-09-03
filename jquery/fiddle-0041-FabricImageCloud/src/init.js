@@ -2,9 +2,9 @@ app.controller = app.controller || {
     onDOMContentLoaded: function () {
       console.log("%c" + app.metadata.consoleTag, 'font-style: italic; font-size: 20px;');
       console.log("%c" + app.metadata.gitHubUrl, "color: blue; font-style: italic; text-decoration: underline; background-color: #FFFF00;");
-      $(document).load(app.metadata.dataUrl);
-      $(document).ajaxComplete(this.onAjaxComplete);
-      //app.controller.init();
+      //$(document).load(app.metadata.dataUrl);
+      //$(document).ajaxComplete(this.onAjaxComplete);
+      app.controller.init();
     },
     onAjaxComplete: function (event, xhr, settings) {
       if (settings.url === app.metadata.dataUrl) {
@@ -18,7 +18,7 @@ app.controller = app.controller || {
     },
     init: function () {
 
-      let objects = [],
+      /*let objects = [],
         center = {
           x: $(document).width() / 2,
           y: $(document).height() / 2,
@@ -43,13 +43,20 @@ app.controller = app.controller || {
           url: photo.url,
           onImageLoad: app.controller.onImageLoad
         }));
-      });
+      });*/
 
       app.controller.canvas = new Canvas({
         hook: 'fiddle',
         width: window.innerWidth,
         height: window.innerHeight,
-        children: objects
+        children: [
+          new Image({
+            url: 'test.jpg',
+            width: 100,
+            height: 200,
+            onImageLoad: app.controller.onImageLoad
+          })
+        ]
       });
     },
 

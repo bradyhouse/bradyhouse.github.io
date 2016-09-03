@@ -403,8 +403,8 @@
                 fabric.Image.fromURL(this.url, function(oImg) {
                     oImg.setWidth(self.width);
                     oImg.setHeight(self.height);
-                    oImg.setLeft(self.left);
-                    oImg.setTop(self.top);
+                    //oImg.setLeft(self.left);
+                    //oImg.setTop(self.top);
                     //oImg.setOpacity(self.opacity);
                     self.fabric = oImg;
                     if (self.autoBind) {
@@ -487,9 +487,9 @@
         onDOMContentLoaded: function() {
             console.log("%c" + app.metadata.consoleTag, 'font-style: italic; font-size: 20px;');
             console.log("%c" + app.metadata.gitHubUrl, "color: blue; font-style: italic; text-decoration: underline; background-color: #FFFF00;");
-            $(document).load(app.metadata.dataUrl);
-            $(document).ajaxComplete(this.onAjaxComplete);
-            //app.controller.init();
+            //$(document).load(app.metadata.dataUrl);
+            //$(document).ajaxComplete(this.onAjaxComplete);
+            app.controller.init();
         },
         onAjaxComplete: function(event, xhr, settings) {
             if (settings.url === app.metadata.dataUrl) {
@@ -502,34 +502,41 @@
             }
         },
         init: function() {
-            let objects = [],
-                center = {
-                    x: $(document).width() / 2,
-                    y: $(document).height() / 2,
-                };
+            /*let objects = [],
+              center = {
+                x: $(document).width() / 2,
+                y: $(document).height() / 2,
+              };
             app.model.PhotoAlbum.children.map((photo, index) => {
-                let radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
-                    randX = Util.rand(0, $(document).width()),
-                    randY = Util.rand(0, $(document).height()),
-                    dur = Util.rand(120, 240) + 's',
-                    circularPathArr = Util.toCircularPointArray(randX, randY, radius),
-                    startingIndex = Util.rand(0, circularPathArr.length - 1),
-                    startingPoint = circularPathArr[startingIndex];
-                objects.push(new Image({
-                    id: photo.title,
-                    width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 4) : Math.floor((+photo.width) / 6),
-                    height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 4) : Math.floor((+photo.height) / 6),
-                    left: startingPoint.x,
-                    top: startingPoint.y,
-                    url: photo.url,
-                    onImageLoad: app.controller.onImageLoad
-                }));
-            });
+              let radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
+                randX = Util.rand(0, $(document).width()),
+                randY = Util.rand(0, $(document).height()),
+                dur = Util.rand(120, 240) + 's',
+                circularPathArr = Util.toCircularPointArray(randX, randY, radius),
+                startingIndex = Util.rand(0, circularPathArr.length - 1),
+                startingPoint = circularPathArr[startingIndex];
+              objects.push(new Image({
+                id: photo.title,
+                width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 4) : Math.floor((+photo.width) / 6),
+                height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 4) : Math.floor((+photo.height) / 6),
+                left: startingPoint.x,
+                top: startingPoint.y,
+                url: photo.url,
+                onImageLoad: app.controller.onImageLoad
+              }));
+            });*/
             app.controller.canvas = new Canvas({
                 hook: 'fiddle',
                 width: window.innerWidth,
                 height: window.innerHeight,
-                children: objects
+                children: [
+                    new Image({
+                        url: 'test.jpg',
+                        width: 100,
+                        height: 200,
+                        onImageLoad: app.controller.onImageLoad
+                    })
+                ]
             });
         },
         onImageLoad: function(image) {
