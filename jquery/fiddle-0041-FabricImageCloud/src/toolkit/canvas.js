@@ -21,7 +21,7 @@ class Canvas extends Base {
     this.init();
   }
   init() {
-    let canvas = new fabric.Canvas(this.hook, {
+    var canvas = new fabric.Canvas(this.hook, {
       width: this.width,
       height: this.height
     });

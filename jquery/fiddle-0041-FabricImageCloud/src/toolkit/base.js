@@ -9,7 +9,7 @@ class Base {
       this.apply(object, defaults);
     }
     if (object && config && typeof config === 'object') {
-      let property;
+      var property;
       for (property in config) {
         if (config[property]) {
           object[property] = config[property];
