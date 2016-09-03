@@ -36,8 +36,6 @@ class Canvas extends Base {
           }
         }, canvas);
       }
-      
-
       this.fabric = canvas;
     }
   }
