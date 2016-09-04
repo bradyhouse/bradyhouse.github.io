@@ -317,11 +317,28 @@
             /**
              * Utility Method that can be used to convert an angle
              * to it's radian equivalent.
-             * @param angle
+             *
+             * @param angle {number}
              * @returns {number}
              */
         static convertToRadians(angle) {
-            return angle * (Math.PI / 180);
+                return angle * (Math.PI / 180);
+            }
+            /**
+             * Utility method that can be used to recalculate the width or height of an element
+             * based on the dimensions of the window.
+             *
+             * @param type {string} 'width' or 'height'
+             * @param value {number}
+             * @returns {number}
+             */
+        static scaleToWindow(type, value) {
+            var factor = type === 'width' ? window.innerHeight / window.innerWidth : window.innerWidth / window.innerHeight,
+                result = 0;
+            if (value && typeof value === 'number') {
+                result = Math.floor(value * factor);
+            }
+            return result;
         }
     }
 
@@ -337,7 +354,8 @@
                 children: [],
                 backgroundColor: 'rgb(100,100,200)',
                 width: 500,
-                height: 500
+                height: 500,
+                onImageClick: null
             };
         }
         constructor(config) {
@@ -345,13 +363,28 @@
             if (config) {
                 this.apply(this, config, this.config());
             }
+            this._start = 0;
+            this._stop = 0;
             this.init();
         }
+        get start() {
+            return this._start;
+        }
+        set start(value) {
+            this._start = value;
+        }
+        get stop() {
+            return this._stop;
+        }
+        set stop(value) {
+            this._stop = value;
+        }
         init() {
-            var canvas = new fabric.Canvas(this.hook, {
-                width: this.width,
-                height: this.height
-            });
+            var me = this,
+                canvas = new fabric.Canvas(this.hook, {
+                    width: this.width,
+                    height: this.height
+                });
             if (canvas) {
                 if (this.children && this.children.length) {
                     this.children.map(function(child) {
@@ -362,6 +395,22 @@
                         }
                     }, canvas);
                 }
+                canvas.on('mouse:down', function(object) {
+                    var date = new Date();
+                    me.start = date.getTime();
+                });
+                canvas.on('mouse:up', function(object) {
+                    var date = new Date(),
+                        image = object && object.target && object.target.type && object.target.type === 'image' ? object.target : null,
+                        delta = 0;
+                    me.stop = date.getTime();
+                    delta = me.stop - me.start;
+                    if (delta < 100 && image) {
+                        if (me.hasOwnMethod('onImageClick')) {
+                            me['onImageClick'].call(me, image);
+                        }
+                    }
+                });
                 this.fabric = canvas;
             }
         }
@@ -484,6 +533,7 @@
 
 
     app.controller = app.controller || {
+        topImage: null,
         onDOMContentLoaded: function() {
             try {
                 console.log("%c" + app.metadata.consoleTag, 'font-style: italic; font-size: 20px;');
@@ -532,8 +582,27 @@
                 hook: 'fiddle',
                 width: window.innerWidth,
                 height: window.innerHeight,
+                onImageClick: app.controller.onImageClick,
                 children: objects
             });
+        },
+        onImageClick: function(image) {
+            var topImage = app.controller.topImage ? app.controller.topImage : null;
+            if (topImage) {
+                image.setWidth(topImage.width);
+                image.setHeight(topImage.height);
+                image.setLeft(topImage.left);
+                image.setTop(topImage.top);
+                app.controller.canvas.fabric.remove(topImage);
+                app.controller.topImage = null;
+            } else {
+                topImage = jQuery.extend(true, {}, image);
+                topImage.scaleToHeight(window.innerHeight);
+                app.controller.canvas.fabric.add(topImage);
+                app.controller.canvas.fabric.setActiveObject(topImage);
+                topImage.center();
+                app.controller.topImage = topImage;
+            }
         },
         onImageLoad: function(image) {
             if (app.controller.canvas) {

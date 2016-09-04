@@ -300,11 +300,29 @@ class Util {
   /**
    * Utility Method that can be used to convert an angle
    * to it's radian equivalent.
-   * @param angle
+   *
+   * @param angle {number}
    * @returns {number}
    */
   static convertToRadians(angle) {
     return angle * (Math.PI / 180);
+  }
+
+  /**
+   * Utility method that can be used to recalculate the width or height of an element
+   * based on the dimensions of the window.
+   *
+   * @param type {string} 'width' or 'height'
+   * @param value {number}
+   * @returns {number}
+   */
+  static scaleToWindow(type, value) {
+    var factor = type === 'width' ? window.innerHeight / window.innerWidth : window.innerWidth / window.innerHeight,
+        result = 0;
+    if (value && typeof value === 'number') {
+      result = Math.floor(value * factor);
+    }
+    return result;
   }
 
 }

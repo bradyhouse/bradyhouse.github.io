@@ -1,4 +1,5 @@
 app.controller = app.controller || {
+    topImage: null,
     onDOMContentLoaded: function () {
       try {
         console.log("%c" + app.metadata.consoleTag, 'font-style: italic; font-size: 20px;');
@@ -45,6 +46,7 @@ app.controller = app.controller || {
           top: startingPoint.y,
           url: photo.url,
           onImageLoad: app.controller.onImageLoad
+
         }));
       });
 
@@ -52,8 +54,29 @@ app.controller = app.controller || {
         hook: 'fiddle',
         width: window.innerWidth,
         height: window.innerHeight,
+        onImageClick: app.controller.onImageClick,
         children: objects
       });
+    },
+
+    onImageClick: function(image) {
+      var topImage = app.controller.topImage ? app.controller.topImage : null;
+
+      if (topImage) {
+        image.setWidth(topImage.width);
+        image.setHeight(topImage.height);
+        image.setLeft(topImage.left);
+        image.setTop(topImage.top);
+        app.controller.canvas.fabric.remove(topImage);
+        app.controller.topImage = null;
+      } else {
+        topImage = jQuery.extend(true, {}, image);
+        topImage.scaleToHeight(window.innerHeight);
+        app.controller.canvas.fabric.add(topImage);
+        app.controller.canvas.fabric.setActiveObject(topImage);
+        topImage.center();
+        app.controller.topImage = topImage;
+      }
     },
 
     onImageLoad: function(image) {
