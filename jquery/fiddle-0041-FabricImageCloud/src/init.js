@@ -1,3 +1,16 @@
+
+if ( !window.requestAnimationFrame ) {
+  window.requestAnimationFrame = ( function() {
+    return window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function(callback, element ) {
+        window.setTimeout( callback, 1000 / 60 );
+      };
+  } )();
+}
+
 app.controller = app.controller || {
     topImage: null,
     onDOMContentLoaded: function () {
@@ -28,34 +41,35 @@ app.controller = app.controller || {
           y: $(document).height() / 2,
         };
 
+      app.controller.canvas = new Canvas({
+        hook: 'fiddle',
+        width: window.innerWidth,
+        height: window.innerHeight,
+        onImageClick: app.controller.onImageClick
+      });
+
       app.model.PhotoAlbum.children.map(function(photo, index) {
         var radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
           randX = Util.rand(0, $(document).width()),
           randY = Util.rand(0, $(document).height()),
-          dur = Util.rand(120, 240) + 's',
+          dur = 5000,
           circularPathArr = Util.toCircularPointArray(randX, randY, radius),
           startingIndex = Util.rand(0, circularPathArr.length - 1),
-          startingPoint = circularPathArr[startingIndex];
-
+          startingPoint = circularPathArr[startingIndex],
+          reorderedPathArr = Util.reorderFrom(circularPathArr, startingIndex),
+          x = Util.flattenToValues(reorderedPathArr, 'x'),
+          y = Util.flattenToValues(reorderedPathArr, 'y');
 
         objects.push(new Image({
           id: photo.title,
+          controller: app.controller,
           width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 4) : Math.floor((+photo.width) / 6),
           height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 4) : Math.floor((+photo.height) / 6),
           left: startingPoint.x,
           top: startingPoint.y,
           url: photo.url,
           onImageLoad: app.controller.onImageLoad
-
         }));
-      });
-
-      app.controller.canvas = new Canvas({
-        hook: 'fiddle',
-        width: window.innerWidth,
-        height: window.innerHeight,
-        onImageClick: app.controller.onImageClick,
-        children: objects
       });
     },
 

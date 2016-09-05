@@ -5,7 +5,7 @@
     app.metadata = app.metadata || {
         consoleTag: 'H O U S E ~ f i d d l e s',
         gitHubUrl: 'https://github.com/bradyhouse/house/tree/master/fiddles/jquery/fiddle-0041-fabricImageCloud',
-        dataUrl: 'data.json'
+        dataUrl: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/297733/photo-album.json'
     };
 
 
@@ -50,13 +50,14 @@
          * @returns {string}
          */
         static color() {
-                var hex = "#",
-                    i = 0;
-                for (; i < 6; i++) {
-                    hex += Math.floor(Math.random() * 16).toString(16);
-                }
-                return hex;
+            var hex = "#",
+                i = 0;
+            for (; i < 6; i++) {
+                hex += Math.floor(Math.random() * 16).toString(16);
             }
+            return hex;
+        }
+        static emptyFn() {}
             /**
              * Static method that can be used to generate a random
              * number within a given range.
@@ -247,14 +248,11 @@
              * @returns {string}
              */
         static flattenToValues(pointArray, axis) {
-            var path = '';
+            var path = [];
             if (pointArray.constructor === Array && pointArray.length) {
                 if (pointArray[0].hasOwnProperty(axis)) {
                     pointArray.map(function(point, index) {
-                        path += point[axis];
-                        if (index < (pointArray.length - 1)) {
-                            path += ';';
-                        }
+                        path.push(point[axis]);
                     });
                 }
             }
@@ -405,7 +403,7 @@
                         delta = 0;
                     me.stop = date.getTime();
                     delta = me.stop - me.start;
-                    if (delta < 100 && image) {
+                    if (delta < 200 && image) {
                         if (me.hasOwnMethod('onImageClick')) {
                             me['onImageClick'].call(me, image);
                         }
@@ -424,7 +422,7 @@
     class Image extends Base {
         config() {
             return {
-                hook: null,
+                controller: null,
                 url: null,
                 left: 100,
                 top: 100,
@@ -447,21 +445,21 @@
             }
         }
         init() {
-            var self = this;
-            if (this.url) {
-                fabric.Image.fromURL(this.url, function(oImg) {
-                    oImg.setWidth(self.width);
-                    oImg.setHeight(self.height);
-                    oImg.setLeft(self.left);
-                    oImg.setTop(self.top);
-                    oImg.setOpacity(self.opacity);
-                    self.fabric = oImg;
-                    if (self.autoBind) {
-                        self.bind();
+            var me = this;
+            if (me.url) {
+                fabric.Image.fromURL(me.url, function(oImg) {
+                    oImg.setWidth(me.width);
+                    oImg.setHeight(me.height);
+                    oImg.setLeft(me.left);
+                    oImg.setTop(me.top);
+                    oImg.setOpacity(me.opacity);
+                    if (me.autoBind) {
+                        me.bind();
                     }
-                    if (self.hasOwnMethod('onImageLoad')) {
-                        self['onImageLoad'].call(self, oImg);
+                    if (me.hasOwnMethod('onImageLoad')) {
+                        me['onImageLoad'].call(me, oImg);
                     }
+                    me.fabric = oImg;
                 });
             }
         }
@@ -532,6 +530,17 @@
     }
 
 
+    if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = (function() {
+            return window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function(callback, element) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+    }
     app.controller = app.controller || {
         topImage: null,
         onDOMContentLoaded: function() {
@@ -560,16 +569,26 @@
                     x: $(document).width() / 2,
                     y: $(document).height() / 2,
                 };
+            app.controller.canvas = new Canvas({
+                hook: 'fiddle',
+                width: window.innerWidth,
+                height: window.innerHeight,
+                onImageClick: app.controller.onImageClick
+            });
             app.model.PhotoAlbum.children.map(function(photo, index) {
                 var radius = $(document).width() < $(document).height() ? $(document).width() / 2 : $(document).height() / 2,
                     randX = Util.rand(0, $(document).width()),
                     randY = Util.rand(0, $(document).height()),
-                    dur = Util.rand(120, 240) + 's',
+                    dur = 5000,
                     circularPathArr = Util.toCircularPointArray(randX, randY, radius),
                     startingIndex = Util.rand(0, circularPathArr.length - 1),
-                    startingPoint = circularPathArr[startingIndex];
+                    startingPoint = circularPathArr[startingIndex],
+                    reorderedPathArr = Util.reorderFrom(circularPathArr, startingIndex),
+                    x = Util.flattenToValues(reorderedPathArr, 'x'),
+                    y = Util.flattenToValues(reorderedPathArr, 'y');
                 objects.push(new Image({
                     id: photo.title,
+                    controller: app.controller,
                     width: objects.length % 4 === 0 ? Math.floor((+photo.width) / 4) : Math.floor((+photo.width) / 6),
                     height: objects.length % 4 === 0 ? Math.floor((+photo.height) / 4) : Math.floor((+photo.height) / 6),
                     left: startingPoint.x,
@@ -577,13 +596,6 @@
                     url: photo.url,
                     onImageLoad: app.controller.onImageLoad
                 }));
-            });
-            app.controller.canvas = new Canvas({
-                hook: 'fiddle',
-                width: window.innerWidth,
-                height: window.innerHeight,
-                onImageClick: app.controller.onImageClick,
-                children: objects
             });
         },
         onImageClick: function(image) {

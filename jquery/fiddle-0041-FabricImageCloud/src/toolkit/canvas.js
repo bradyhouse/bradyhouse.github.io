@@ -70,7 +70,7 @@ class Canvas extends Base {
             delta = 0;
         me.stop = date.getTime();
         delta = me.stop - me.start;
-        if (delta < 100 && image) {
+        if (delta < 200 && image) {
           if (me.hasOwnMethod('onImageClick')) {
             me['onImageClick'].call(me, image);
           }

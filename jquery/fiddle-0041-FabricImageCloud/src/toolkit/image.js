@@ -6,7 +6,7 @@ class Image extends Base {
 
   config() {
     return {
-      hook: null,
+      controller: null,
       url: null,
       left: 100,
       top: 100,
@@ -32,21 +32,24 @@ class Image extends Base {
   }
 
   init() {
-    var self = this;
-    if (this.url) {
-      fabric.Image.fromURL(this.url, function(oImg) {
-        oImg.setWidth(self.width);
-        oImg.setHeight(self.height);
-        oImg.setLeft(self.left);
-        oImg.setTop(self.top);
-        oImg.setOpacity(self.opacity);
-        self.fabric = oImg;
-        if (self.autoBind) {
-          self.bind();
+    var me = this;
+    if (me.url) {
+      fabric.Image.fromURL(me.url, function(oImg) {
+        oImg.setWidth(me.width);
+        oImg.setHeight(me.height);
+        oImg.setLeft(me.left);
+        oImg.setTop(me.top);
+        oImg.setOpacity(me.opacity);
+        if (me.autoBind) {
+          me.bind();
         }
-        if (self.hasOwnMethod('onImageLoad')) {
-          self['onImageLoad'].call(self, oImg);
+        if (me.hasOwnMethod('onImageLoad')) {
+          me['onImageLoad'].call(me, oImg);
         }
+
+        me.fabric = oImg;
+
+
       });
     }
   }

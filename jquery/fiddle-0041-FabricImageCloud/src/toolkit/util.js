@@ -14,6 +14,8 @@ class Util {
     return hex;
   }
 
+  static emptyFn() { }
+
   /**
    * Static method that can be used to generate a random
    * number within a given range.
@@ -223,14 +225,11 @@ class Util {
    * @returns {string}
    */
   static flattenToValues(pointArray, axis) {
-      var path = '';
+      var path = [];
       if (pointArray.constructor === Array && pointArray.length) {
         if (pointArray[0].hasOwnProperty(axis)) {
           pointArray.map(function(point, index) {
-            path += point[axis];
-            if (index < (pointArray.length-1)) {
-              path+=';';
-            }
+            path.push(point[axis]);
           });
         }
       }
