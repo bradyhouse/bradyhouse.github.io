@@ -1,7 +1,7 @@
-angular (sample create)
+ExtJS 5 (start)
 ======
 
-Executing the command `./fiddle.sh "create" "aurelia" "fiddle-0000-Template"` produces the following output.
+Executing the command `./fiddle.sh "start" "extjs5"` produces the following output.
 
     H o u s e
     oooooooooooo  o8o        .o8        .o8  oooo
@@ -13,13 +13,10 @@ Executing the command `./fiddle.sh "create" "aurelia" "fiddle-0000-Template"` pr
     o888o        o888o  Y8bod88P   Y8bod88P  o888o  Y8bod8P
     
     FIDDLE.SH
-    FIDDLE-CREATE.SH
-    FIDDLE-AURELIA.SH
-    Bash version 3.2.57(1)-release...
-    └──"AURELIA" CREATED.
+    FIDDLE-START.SH
+    ├────STARTSERVER
+    Serving "/Users/e13542/github/house/fiddles/extjs5" at http://127.0.0.1:1841
     
-    FIDDLE-INDEX.SH
-    06-02-16
-    Done. All "aurelia" fiddles have been re-indexed.
 
-    
+Your default web browser should then open to the root [index.html](index.html) page using port 1841.  To stop the
+web server, simply press `Ctrl`-`C`.

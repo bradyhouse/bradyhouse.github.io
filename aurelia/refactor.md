@@ -1,7 +1,8 @@
-D3 (sample create)
+Aurelia (refactor)
 ======
 
-Executing the command `./fiddle.sh "create" "d3" "fiddle-0000-Template"` produces the following output.
+Executing the command `./fiddle.sh "refactor" "aurelia" "0000" "fiddle-0100-Refactor"` from the `scripts` directory produces
+the following output.
 
     H o u s e
     oooooooooooo  o8o        .o8        .o8  oooo
@@ -13,11 +14,12 @@ Executing the command `./fiddle.sh "create" "d3" "fiddle-0000-Template"` produce
     o888o        o888o  Y8bod88P   Y8bod88P  o888o  Y8bod8P
     
     FIDDLE.SH
-    FIDDLE-CREATE.SH
-    05-28-16
+    FIDDLE-REFACTOR.SH
     Password:
-    Done. The "../fiddles/d3/fiddle-0000-Template" directory has been initialized.
-    FIDDLE-INDEX.SH
-    05-28-16
-    Done. All "d3" fiddles have been re-indexed.
-    
+    Refactor process completed successfully.
+    "fiddle-0000-Template" is now "fiddle-0100-Refactor".
+
+
+
+
+
