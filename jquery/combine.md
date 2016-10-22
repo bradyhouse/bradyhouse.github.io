@@ -36,7 +36,7 @@ a script tag link to the combined file.
 ### Use Case
 
 Files from the src sub-directory are assembled based on the contents of the `src/sequence.conf` file. In the case of the
-above example, which is an actual working fiddle, the []src/sequence.conf](fiddle-0041-FabricImageCloud/src/sequence.conf) 
+above example, which is an actual working fiddle, the [src/sequence.conf](fiddle-0041-FabricImageCloud/src/sequence.conf) 
 file contains the following:
 
     meta.js
@@ -52,4 +52,43 @@ file contains the following:
 After the command completes, the [app.js](fiddle-0041-FabricImageCloud/app.js) file in the root directory then contains 
 the contents of all of these files.  
 
+
+### Usage Details
+
+To see usage details, execute the command `./fiddle.sh "combine"` from the `scripts` directory.  This will produces the 
+following output.
+    
+    H o u s e
+    oooooooooooo  o8o        .o8        .o8  oooo
+     888       8  `"'        888        888   888
+     888         oooo   .oooo888   .oooo888   888   .ooooo.
+     888oooo8     888  d88   888  d88   888   888  d88   88b
+     888          888  888   888  888   888   888  888ooo888
+     888          888  888   888  888   888   888  888    .o
+    o888o        o888o  Y8bod88P   Y8bod88P  o888o  Y8bod8P
+    
+    FIDDLE.SH
+    FIDDLE-COMBINE.SH
+    
+    Nope ~ Incorrect number of arguments
+    
+    Usage:
+    
+    ./fiddle.sh "combine" "[t]" "[f]" "[a]" "[c]"
+    
+    [t] - type. Valid types include:
+    
+    	"angular2"	Angular2 Fiddle
+    	"d3"		Data Driven Document Fiddle
+    	"extjs5"	Ext JS 5 Fiddle
+    	"extjs6"	Ext JS 6 Fiddle
+    	"jquery"	jQuery / Bootstrap Fiddle
+    	"three"		hree.js / WebGl Fiddle
+    	"svg"		Scalar Vector Graphic Fiddle
+    
+    [f] - existing fiddle name.  For example: "fiddleParabolaSurface"
+    
+    [a] - (optional) target file name. Defaults to "app.js"
+    
+    [c] - (optional) disable closure. Defaults to "1" (false)
 
