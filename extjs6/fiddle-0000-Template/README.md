@@ -10,12 +10,17 @@ House extJS Fiddle - fiddle-0000-Template
 
 ### Creation Date
 
-09-30-16
+12-11-16
 
 
 ### Description
 
-Another ExtJS Fiddle. 
+Another ExtJS Fiddle.
+
+
+### Issue
+
+[Issue {{issueNumber}}](https://github.com/bradyhouse/house/issues/{{issueNumber}})
 
 
 ### Published Version Link
@@ -25,4 +30,4 @@ N/A
 
 ### Tags
 
-ExtJS-5-1
+ExtJS-6-1
