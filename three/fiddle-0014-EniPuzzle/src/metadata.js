@@ -1,6 +1,6 @@
 let metadata = {
     urls: {
-        github: 'https://github.com/bradyhouse/house/tree/master/fiddles/three/{{FiddleName}}',
+        github: 'https://github.com/bradyhouse/house/tree/master/fiddles/three/fiddle-0014-EniPuzzle',
         ball: {
             surfaceMaterial: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/297733/neptuneSurfaceMaterial.jpg'
         }

@@ -1,4 +1,4 @@
-{{FiddleName}}
+fiddle-0014-EniPuzzle
 ======
 
 ![Screenshot](screenshot.png)
@@ -6,12 +6,12 @@
 
 ### Title
 
-House three.js Fiddle - {{FiddleName}}
+House three.js Fiddle - fiddle-0014-EniPuzzle
 
 
 ### Creation Date
 
-{{BornOnDate}}
+fiddle-0014-EniPuzzle
 
 
 ### Location
