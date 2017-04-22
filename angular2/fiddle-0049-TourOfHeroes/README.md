@@ -28,7 +28,7 @@ Build an in-browser Angular2 fiddle based on the Angular2 tour of [heroes tutori
 
 ### Published Version Link
 
-N/A
+[bradyhouse.github.io](http://bradyhouse.github.io/angular2/fiddle-0049-TourOfHeroes/index.html)
 
 
 ### Tags
