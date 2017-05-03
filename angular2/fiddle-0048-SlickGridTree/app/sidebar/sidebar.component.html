@@ -1,6 +1,6 @@
-<div class="sidebar-component"
-     *ngIf="isLoaded"
-     [ngStyle]="{'width': '100%', 'height': height + 'px'}">
-     <code>sidebar</code>
+<div class="sidebar-component">
+  <acme-grid [options]="options">
+    <div class="acme-grid-loader"></div>
+  </acme-grid>
 </div>
 
