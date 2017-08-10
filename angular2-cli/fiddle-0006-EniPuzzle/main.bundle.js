@@ -1,6 +1,6 @@
 webpackJsonp([1,4],{
 
-/***/ 109:
+/***/ 103:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -9,20 +9,20 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 109;
+webpackEmptyContext.id = 103;
 
 
 /***/ }),
 
-/***/ 110:
+/***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(122);
 
 
 
@@ -35,13 +35,13 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 
 /***/ }),
 
-/***/ 116:
+/***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_state_service__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_state_service__ = __webpack_require__(65);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -61,19 +61,10 @@ var AppComponent = (function () {
         this._boardService = _boardService;
         this._gameStateService = _gameStateService;
         this._actionService = _actionService;
-        this.startDragX = 0;
-        this.minDeltaX = 0;
-        this.minDeltaY = 0;
+        this.startDragSquare = null;
+        this.dragOverSquare = null;
         this.fiddleTitle = __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["PuzzleConfig"].title;
         this.subscriptions = [];
-        this.boardOptions = {
-            id: 'fiddle',
-            actionService: _actionService,
-            stateService: _gameStateService,
-            isSolved: true,
-            cols: 8,
-            rows: 8
-        };
         this.toolbarOptions = {
             id: 'pz-toolbar',
             state: this.isToolbarPersisted('pz-toolbar') === true ? this.restoreToolbarState('pz-toolbar') : 'PLAY',
@@ -85,18 +76,12 @@ var AppComponent = (function () {
         this.subscriptions.push(_boardService.boardChange$.subscribe(function (board) { return _this.onBoardChange(board); }));
         _boardService.init(_gameStateService, new __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["Board"](8, 8));
     }
-    AppComponent.prototype.ngOnInit = function () {
-        this.minDeltaX = Math.floor(window.innerWidth / 16);
-        this.minDeltaY = Math.floor(window.innerHeight / 16);
-        console.log('min deltaX = ' + this.minDeltaX);
-        console.log('min deltaY = ' + this.minDeltaY);
-    };
     AppComponent.prototype.ngOnDestroy = function () {
         this.clearSubscriptions();
     };
     AppComponent.prototype.onSquareClick = function ($event) {
         var a = $event, b = this._boardService.emptySquare ? this._boardService.emptySquare : null;
-        if (a && b && this.startDragX === 0 && this.startDragY === 0) {
+        if (a && b && !this.dragOverSquare && !this.startDragSquare) {
             if (!a.isEmpty && __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["Utils"].isValidMove(a, b)) {
                 __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["Utils"].swap(a, b);
                 this._boardService.persist(a);
@@ -105,29 +90,50 @@ var AppComponent = (function () {
             }
         }
     };
+    AppComponent.prototype.onSquareDragOver = function ($event, square) {
+        if (this.startDragSquare) {
+            this.dragOverSquare = square;
+        }
+    };
     AppComponent.prototype.onSquareDragStart = function ($event, square) {
-        this.startDragX = $event.clientX;
-        this.startDragY = $event.clientY;
+        this.startDragSquare = square;
+        $event.dataTransfer.dropEffect = 'move';
     };
     AppComponent.prototype.onSquareDragEnd = function ($event, square) {
-        var deltaX = $event.clientX - this.startDragX, deltaY = $event.clientY - this.startDragY, repX = Math.ceil(deltaX / this.minDeltaX);
-        console.log('deltaX = ' + deltaX);
-        console.log('deltaY = ' + deltaY);
-        if (Math.abs(deltaY) < this.minDeltaY && Math.abs(deltaX) >= this.minDeltaX) {
-            if (this.startDragX > $event.clientX) {
-                this._boardService.shift(true, square);
+        if (this.startDragSquare && this.dragOverSquare) {
+            if (this.startDragSquare.row === this.dragOverSquare.row) {
+                return this.onHorizontalDragEnd($event, square);
             }
-            else if (this.startDragX < $event.clientX) {
-                this._boardService.shift(false, square);
+            /*if (this.startDragSquare.col === this.dragOverSquare.col) {
+              return this.onVerticalDragEnd($event, square);
+            }*/
+        }
+        this.startDragSquare = null;
+        this.dragOverSquare = null;
+    };
+    AppComponent.prototype.onVerticalDragEnd = function ($event, square) {
+        this.startDragSquare = null;
+        this.dragOverSquare = null;
+    };
+    AppComponent.prototype.onHorizontalDragEnd = function ($event, square) {
+        var _this = this;
+        var repX = Math.abs(this.startDragSquare.col - this.dragOverSquare.col), i = 1;
+        if (repX) {
+            for (; i <= repX; i++) {
+                if (this.startDragSquare.col < this.dragOverSquare.col) {
+                    window.setTimeout(function () {
+                        _this._boardService.shiftX(false, square);
+                    }, i * 66);
+                }
+                else {
+                    window.setTimeout(function () {
+                        _this._boardService.shiftX(true, square);
+                    }, i * 66);
+                }
             }
         }
-        else if (Math.abs(deltaY) >= this.minDeltaY) {
-            this.startDragX = 0;
-            this.startDragY = 0;
-            this.onSquareClick(square);
-        }
-        this.startDragX = 0;
-        this.startDragY = 0;
+        this.startDragSquare = null;
+        this.dragOverSquare = null;
     };
     AppComponent.prototype.clearSubscriptions = function () {
         this.subscriptions.map(function (subscription) {
@@ -165,8 +171,8 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* Component */])({
         selector: 'app-root',
-        template: __webpack_require__(188),
-        styles: [__webpack_require__(182)]
+        template: __webpack_require__(179),
+        styles: [__webpack_require__(176)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["BoardService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["BoardService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__app_state_service__["a" /* AppStateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__app_state_service__["a" /* AppStateService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["ActionsService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_puzzle_index__["ActionsService"]) === "function" && _c || Object])
 ], AppComponent);
@@ -176,17 +182,17 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ 117:
+/***/ 111:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_puzzle_puzzle_module__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_state_service__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_puzzle_puzzle_module__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_state_service__ = __webpack_require__(65);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -226,14 +232,14 @@ AppModule = __decorate([
 
 /***/ }),
 
-/***/ 118:
+/***/ 112:
 /***/ (function(module, exports) {
 
 //# sourceMappingURL=actions-service.interface.js.map
 
 /***/ }),
 
-/***/ 119:
+/***/ 113:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -257,18 +263,18 @@ PuzzleConfig.transition = {
 
 /***/ }),
 
-/***/ 120:
+/***/ 114:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_index__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions_index__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_index__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_index__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions_index__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_index__ = __webpack_require__(77);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PuzzleModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -329,11 +335,11 @@ PuzzleModule = __decorate([
 
 /***/ }),
 
-/***/ 121:
+/***/ 115:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_index__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_index__ = __webpack_require__(24);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BaseService; });
 
 var BaseService = (function () {
@@ -369,18 +375,18 @@ var BaseService = (function () {
 
 /***/ }),
 
-/***/ 122:
+/***/ 116:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__board_model__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utils_common__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__board_model__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utils_common__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_share__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_share__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_share__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -547,10 +553,10 @@ var BoardService = (function () {
     };
     BoardService.prototype.slide = function (left, square, reps) {
         for (var i = 0; i < reps; i++) {
-            this.shift(left, square);
+            this.shiftX(left, square);
         }
     };
-    BoardService.prototype.shift = function (left, square) {
+    BoardService.prototype.shiftX = function (left, square) {
         var _this = this;
         if (left === void 0) { left = false; }
         var squareIndices = [], emptySquareIndices = [];
@@ -600,7 +606,7 @@ BoardService = __decorate([
 
 /***/ }),
 
-/***/ 123:
+/***/ 117:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -622,7 +628,7 @@ var Row = (function () {
 
 /***/ }),
 
-/***/ 124:
+/***/ 118:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -644,7 +650,7 @@ var Square = (function () {
 
 /***/ }),
 
-/***/ 125:
+/***/ 119:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -664,25 +670,25 @@ var ConfigRecord = (function () {
 
 /***/ }),
 
-/***/ 126:
+/***/ 120:
 /***/ (function(module, exports) {
 
 //# sourceMappingURL=database-service.interface.js.map
 
 /***/ }),
 
-/***/ 127:
+/***/ 121:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_share__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_share__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_share__);
 
 //# sourceMappingURL=state-service.interface.js.map
 
 /***/ }),
 
-/***/ 128:
+/***/ 122:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -699,45 +705,10 @@ var environment = {
 
 /***/ }),
 
-/***/ 18:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_index__ = __webpack_require__(27);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BaseComponent; });
-
-var BaseComponent = (function () {
-    function BaseComponent() {
-        this.subscriptions = [];
-    }
-    BaseComponent.prototype.ngOnDestroy = function () {
-        this.clearSubscriptions();
-    };
-    BaseComponent.prototype.clearSubscriptions = function () {
-        this.subscriptions.map(function (subscription) {
-            subscription.unsubscribe();
-        });
-        this.subscriptions = [];
-    };
-    BaseComponent.prototype.handleErrors = function (error) {
-        this.consoleLogMsg('ERROR', error);
-    };
-    BaseComponent.prototype.consoleLogMsg = function (tag, msg) {
-        if (__WEBPACK_IMPORTED_MODULE_0__common_index__["a" /* PuzzleConfig */].isDev === true) {
-            console.log(tag + ': ' + msg);
-        }
-    };
-    return BaseComponent;
-}());
-
-//# sourceMappingURL=base.component.js.map
-
-/***/ }),
-
-/***/ 182:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)();
+exports = module.exports = __webpack_require__(30)();
 // imports
 
 
@@ -752,64 +723,10 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 183:
+/***/ 177:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 184:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(15)();
-// imports
-
-
-// module
-exports.push([module.i, ".top-row {\n  background-color: white;\n  padding-top: 5px;\n}\n\n.body-row {\n  background-color: white;\n}\n\n.bottom-row {\n  background-color: white;\n  padding-bottom: 5px;\n}\n\n.col-shift {\n  height: calc(8vh);\n  width: calc(5vw);\n  font-size: calc(2vmax);\n  margin: 0;\n  padding: 0;\n  background-color: white;\n  border-radius: none;\n  box-shadow: none;\n  border: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n      user-select: none;\n}\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 185:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(15)();
-// imports
-
-
-// module
-exports.push([module.i, "input[type=\"button\"] {\n  border-radius: 10px; /* future proofing */\n  -khtml-border-radius: 10px; /* for old Konqueror browsers */\n  border: none;\n}\n\n.col-a {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: yellow;\n}\n\n.col-b {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: orange;\n}\n\n.col-c {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: red;\n}\n\n.col-d {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: darkred;\n}\n\n.col-e {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: blueviolet;\n}\n\n.col-f {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: blue;\n}\n\n.col-g {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: turquoise;\n}\n\n.col-h {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: green;\n}\n\n.empty {\n  width: calc(10vw);\n  height: calc(8vh);\n  background-color: white;\n  border-radius: none;\n  box-shadow: none;\n  border: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n      user-select: none;\n}\n\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 186:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(15)();
+exports = module.exports = __webpack_require__(30)();
 // imports
 
 
@@ -824,44 +741,66 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 188:
+/***/ 179:
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"app-component\" *ngIf=\"!isLoading\">\n  <input type=\"button\" *ngFor=\"let square of board.squares\"\n         [id]=\"square.id\"\n         value=\"\"\n         [class]=\"square.cssClass\"\n         [draggable]=\"!square.isEmpty\"\n         (dragstart)=\"onSquareDragStart($event, square)\"\n         (dragend)=\"onSquareDragEnd($event, square)\"\n         (click)=\"onSquareClick(square)\" >\n</span>\n"
+module.exports = "<span class=\"app-component\" *ngIf=\"!isLoading\">\n  <input type=\"button\" *ngFor=\"let square of board.squares\"\n         [id]=\"square.id\"\n         value=\"\"\n         [class]=\"square.cssClass\"\n         [draggable]=\"!square.isEmpty\"\n         (dragstart)=\"onSquareDragStart($event, square)\"\n         (dragend)=\"onSquareDragEnd($event, square)\"\n         (dragover)=\"onSquareDragOver($event, square)\"\n         (click)=\"onSquareClick(square)\" >\n</span>\n"
 
 /***/ }),
 
-/***/ 189:
+/***/ 180:
 /***/ (function(module, exports) {
 
-module.exports = "<!--<GridLayout rows=\"auto,auto,auto,auto,auto,auto,auto,auto\" columns=\"*,*,*,*,*,*,*,*,*,*\">\n  <pz-row *ngFor=\"let row of rows\"\n          [options]=\"row\"\n          (leftClick)=\"onRowLeftClick($event)\"\n          (rightClick)=\"onRowRightClick($event)\"\n          (squareClick)=\"onRowSquareClick($event)\">\n  </pz-row>\n</GridLayout>-->\n<table>\n  <tr *ngFor=\"let row of rows\">\n    <pz-row [options]=\"row\"\n            (leftClick)=\"onRowLeftClick($event)\"\n            (rightClick)=\"onRowRightClick($event)\"\n            (squareClick)=\"onRowSquareClick($event)\">\n    </pz-row>\n  </tr>\n</table>\n"
+module.exports = "<input type=\"button\" (click)=\"onToggleClick()\" value=\"{{options?.toggleText}}\">\n<input type=\"button\" *ngIf=\"options?.isBack\" value=\"{{options?.backText}}\">\n"
 
 /***/ }),
 
-/***/ 19:
+/***/ 212:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(104);
+
+
+/***/ }),
+
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_index__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_common__ = __webpack_require__(69);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__utils_common__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__puzzle_config_common__ = __webpack_require__(113);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__puzzle_config_common__["a"]; });
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 35:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_index__ = __webpack_require__(71);
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["StateService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["LocalStorageService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["ActionsEnum"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["Utils"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "PuzzleConfig")) __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["PuzzleConfig"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["Board"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["Utils"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["BoardService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__components_index__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_0__components_index__["ActionsService"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_index__ = __webpack_require__(27);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_1__common_index__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_index__ = __webpack_require__(24);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_1__common_index__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_index__ = __webpack_require__(69);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_1__common_index__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_index__ = __webpack_require__(68);
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_index__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_index__["StateService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_index__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_index__["LocalStorageService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_index__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_index__["ActionsEnum"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_index__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_index__["Board"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_index__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_index__["BoardService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_index__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_index__["ActionsService"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_index__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_index__ = __webpack_require__(77);
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_3__services_index__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_3__services_index__["StateService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_3__services_index__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_3__services_index__["LocalStorageService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_3__services_index__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_3__services_index__["ActionsEnum"]; });
@@ -876,50 +815,7 @@ module.exports = "<!--<GridLayout rows=\"auto,auto,auto,auto,auto,auto,auto,auto
 
 /***/ }),
 
-/***/ 190:
-/***/ (function(module, exports) {
-
-module.exports = "\n\n<!--<Button row=\"0\"\n        col=\"0\"\n        text=\"&lt\"\n        class=\"btn col-shift\"\n        (tap)=\"onLeftClick()\"></Button>\n<pz-square *ngFor=\"let square of squares\"\n           [options]=\"square\"\n           (tap)=\"onSquareClick(square)\"\n           (swipe)=\"onSquareClick(square)\">\n</pz-square>\n<Button row=\"8\"\n        col=\"9\"\n        text=\"&lt\"\n        class=\"btn col-shift\"\n        (tap)=\"onRightClick()\"></Button>-->\n\n<td>\n  <input type=\"button\" value=\"<\" class=\"col-shift\" (click)=\"onLeftClick()\" />\n</td>\n<td *ngFor=\"let square of squares\">\n  <pz-square [options]=\"square\"\n             (click)=\"onSquareClick(square)\">\n  </pz-square>\n</td>\n<td>\n  <input type=\"button\" value=\">\" class=\"col-shift\" (click)=\"onRightClick()\" />\n</td>\n\n\n\n\n"
-
-/***/ }),
-
-/***/ 191:
-/***/ (function(module, exports) {
-
-module.exports = "<!--<Button [row]=\"options.row\"\n        [col]=\"options.col + 1\"\n        [id]=\"options.id\"\n        text=\"options.value\"\n        [class]=\"options.cssClass\"></Button>-->\n\n<input type=\"button\" value=\"&nbsp;\" [class]=\"options.cssClass\">\n"
-
-/***/ }),
-
-/***/ 192:
-/***/ (function(module, exports) {
-
-module.exports = "<input type=\"button\" (click)=\"onToggleClick()\" value=\"{{options?.toggleText}}\">\n<input type=\"button\" *ngIf=\"options?.isBack\" value=\"{{options?.backText}}\">\n"
-
-/***/ }),
-
-/***/ 224:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(110);
-
-
-/***/ }),
-
-/***/ 27:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_common__ = __webpack_require__(70);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__utils_common__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__puzzle_config_common__ = __webpack_require__(119);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__puzzle_config_common__["a"]; });
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ 37:
+/***/ 36:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1012,14 +908,14 @@ LocalStorageService = __decorate([
 
 /***/ }),
 
-/***/ 66:
+/***/ 65:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_share__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_share__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_share__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_puzzle_index__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_puzzle_index__ = __webpack_require__(35);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppStateService; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -1060,7 +956,7 @@ var _a;
 
 /***/ }),
 
-/***/ 67:
+/***/ 66:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1079,18 +975,18 @@ var ActionsEnum;
 
 /***/ }),
 
-/***/ 68:
+/***/ 67:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_share__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_share__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_share__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_enum__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_enum__ = __webpack_require__(66);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActionsService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1149,14 +1045,14 @@ ActionsService = __decorate([
 
 /***/ }),
 
-/***/ 69:
+/***/ 68:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_service__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_enum__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_enum__ = __webpack_require__(66);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_1__actions_enum__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_service_interface__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_service_interface__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_service_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__actions_service_interface__);
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_service_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_service_interface__["StateService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_2__actions_service_interface__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_2__actions_service_interface__["LocalStorageService"]; });
@@ -1176,7 +1072,7 @@ var ACTION_PROVIDERS = [
 
 /***/ }),
 
-/***/ 70:
+/***/ 69:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1370,9 +1266,6 @@ var Utils = (function () {
         if (a.col === b.col) {
             return (rowDelta === 1) && (colDelta === 0);
         }
-        if (a.row === b.row) {
-            return (rowDelta === 0) && (colDelta === 1);
-        }
         return false;
     };
     Utils.swap = function (a, b) {
@@ -1391,274 +1284,64 @@ var Utils = (function () {
 
 /***/ }),
 
-/***/ 71:
-/***/ (function(module, exports) {
-
-//# sourceMappingURL=board-options.interface.js.map
-
-/***/ }),
-
-/***/ 72:
+/***/ 70:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_component__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__board_options_interface__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__board_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__board_options_interface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__index__ = __webpack_require__(19);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardComponent; });
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_index__ = __webpack_require__(24);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BaseComponent; });
 
-
-
-
-var BoardComponent = (function (_super) {
-    __extends(BoardComponent, _super);
-    function BoardComponent() {
-        var _this = _super.call(this) || this;
-        _this.rows = [];
-        _this._emptySquare = null;
-        return _this;
+var BaseComponent = (function () {
+    function BaseComponent() {
+        this.subscriptions = [];
     }
-    Object.defineProperty(BoardComponent.prototype, "database", {
-        get: function () {
-            var stateService = this.options &&
-                this.options.hasOwnProperty('stateService') ? this.options.stateService : null;
-            return stateService ? stateService.databaseService : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BoardComponent.prototype, "emptySquare", {
-        get: function () {
-            var emptyRow = this.rows.filter(function (row) {
-                return row.hasOwnProperty('emptySquare') && row.emptySquare !== null;
-            }), initEmptySquare = emptyRow && emptyRow.length ? emptyRow[0].emptySquare : null;
-            if (this._emptySquare) {
-                return this._emptySquare;
-            }
-            return initEmptySquare;
-        },
-        set: function (value) {
-            this._emptySquare = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BoardComponent.prototype.ngOnChanges = function (changes) {
-        var _this = this;
-        if (this.options) {
-            if (!this.options.hasOwnProperty('isSolved')) {
-                this.options.isSolved = false;
-            }
-            if (!this.options.hasOwnProperty('sequence')) {
-                this.options.sequence = this.sequence(this.options);
-            }
-            if (!this.options.hasOwnProperty('expectedSequence')) {
-                this.options.expectedSequence = this.sequence(this.options, true);
-            }
-            this.rows = this.transform(this.options);
-            if (this.subscriptions.length === 0) {
-                if (this.options.actionService) {
-                    this.subscriptions.push(this.options.actionService.actionChange$
-                        .subscribe(function (action) { return _this.onActionChange(action); }));
-                }
-            }
+    BaseComponent.prototype.ngOnDestroy = function () {
+        this.clearSubscriptions();
+    };
+    BaseComponent.prototype.clearSubscriptions = function () {
+        this.subscriptions.map(function (subscription) {
+            subscription.unsubscribe();
+        });
+        this.subscriptions = [];
+    };
+    BaseComponent.prototype.handleErrors = function (error) {
+        this.consoleLogMsg('ERROR', error);
+    };
+    BaseComponent.prototype.consoleLogMsg = function (tag, msg) {
+        if (__WEBPACK_IMPORTED_MODULE_0__common_index__["a" /* PuzzleConfig */].isDev === true) {
+            console.log(tag + ': ' + msg);
         }
     };
-    BoardComponent.prototype.onRowSquareClick = function ($event) {
-        var row = $event[0], a = $event[1], b = this.emptySquare ? this.emptySquare : null;
-        if (row && a && b) {
-            if (!a.isEmpty && __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].isValidMove(a, b)) {
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(a, b);
-                this.persist(a);
-                this.persist(b);
-                this.emptySquare = a;
-            }
-        }
-    };
-    BoardComponent.prototype.onRowLeftClick = function (row) {
-        if (row.emptySquare !== null) {
-            this.emptySquare = row.emptySquare;
-        }
-    };
-    BoardComponent.prototype.onRowRightClick = function (row) {
-        if (row.emptySquare !== null) {
-            this.emptySquare = row.emptySquare;
-        }
-    };
-    BoardComponent.prototype.onActionChange = function (action) {
-        var _this = this;
-        this.unPersist();
-        switch (action) {
-            case __WEBPACK_IMPORTED_MODULE_3__index__["ActionsEnum"].PLAY:
-                this.options.isSolved = false;
-                break;
-            case __WEBPACK_IMPORTED_MODULE_3__index__["ActionsEnum"].SOLVE:
-                this.options.isSolved = true;
-                break;
-        }
-        setTimeout(function () {
-            _this.rows = _this.transform(_this.options);
-        }, 100);
-    };
-    BoardComponent.prototype.sequence = function (options, expect) {
-        if (expect === void 0) { expect = false; }
-        var min = 1, rows = options ? options.rows : null, cols = rows ? options.cols : null, max = rows && cols ? rows * cols : 0, seq = [];
-        if (max > 0) {
-            if (!expect) {
-                seq = __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].generateSequence(min, max, max);
-            }
-            else {
-                seq = __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].generateSequentialSequence(min, max);
-            }
-        }
-        return seq;
-    };
-    BoardComponent.prototype.transform = function (options) {
-        var row = 1, i = 1, pos = 0, rows = options.rows, cols = options.cols, isSolved = options.isSolved, seq = options.sequence, expectedSeq = options.expectedSequence, subSeq = [], expectedSubSeq = [], store = [], stateService = options.stateService;
-        for (; row <= rows; row++) {
-            if (isSolved) {
-                subSeq = __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].parseSubSequence(expectedSeq, pos, cols);
-            }
-            else {
-                subSeq = __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].parseSubSequence(seq, pos, cols);
-            }
-            expectedSubSeq = __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].parseSubSequence(expectedSeq, pos, cols);
-            store.push({
-                index: i,
-                isLast: row === rows ? true : false,
-                sequence: subSeq,
-                expectedSequence: expectedSubSeq,
-                stateService: stateService
-            });
-            i++;
-            pos += cols;
-        }
-        return store;
-    };
-    BoardComponent.prototype.unPersist = function () {
-        var databaseService = this.database;
-        if (databaseService) {
-            databaseService.zero('row');
-        }
-    };
-    BoardComponent.prototype.persist = function (options) {
-        var databaseService = this.database;
-        if (databaseService) {
-            databaseService.push(options.id, options);
-        }
-    };
-    return BoardComponent;
-}(__WEBPACK_IMPORTED_MODULE_1__base_component__["a" /* BaseComponent */]));
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__board_options_interface__["BoardOptionsInterface"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__board_options_interface__["BoardOptionsInterface"]) === "function" && _a || Object)
-], BoardComponent.prototype, "options", void 0);
-BoardComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* Component */])({
-        selector: 'pz-board',
-        template: __webpack_require__(189),
-        styles: [__webpack_require__(183)],
-    }),
-    __metadata("design:paramtypes", [])
-], BoardComponent);
+    return BaseComponent;
+}());
 
-var _a;
-//# sourceMappingURL=board.component.js.map
+//# sourceMappingURL=base.component.js.map
 
 /***/ }),
 
-/***/ 73:
+/***/ 71:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__square_square_component__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__row_row_component__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__board_board_component__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toolbar_toolbar_component__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar_toolbar_component__ = __webpack_require__(73);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__);
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["StateService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["LocalStorageService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["ActionsEnum"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["Utils"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "PuzzleConfig")) __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["PuzzleConfig"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["Board"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["BoardService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_4__square_square_options_interface__["ActionsService"]; });
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__);
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["StateService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["LocalStorageService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["ActionsEnum"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["Utils"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "PuzzleConfig")) __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["PuzzleConfig"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["Board"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["BoardService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_5__row_row_options_interface__["ActionsService"]; });
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__);
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["StateService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["LocalStorageService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["ActionsEnum"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["Utils"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "PuzzleConfig")) __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["PuzzleConfig"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["Board"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["BoardService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_6__board_board_options_interface__["ActionsService"]; });
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__);
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["StateService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["LocalStorageService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["ActionsEnum"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["Utils"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "PuzzleConfig")) __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["PuzzleConfig"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["Board"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["BoardService"]; });
-/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_7__toolbar_toolbar_options_interface__["ActionsService"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__base_component__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__);
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["StateService"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "LocalStorageService")) __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["LocalStorageService"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["ActionsEnum"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "PuzzleConfig")) __webpack_require__.d(__webpack_exports__, "PuzzleConfig", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["PuzzleConfig"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["Board"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "Utils")) __webpack_require__.d(__webpack_exports__, "Utils", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["Utils"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["BoardService"]; });
+/* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_1__toolbar_toolbar_options_interface__["ActionsService"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_component__ = __webpack_require__(70);
 /* unused harmony namespace reexport */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PUZZLE_COMPONENTS", function() { return PUZZLE_COMPONENTS; });
 
-
-
-
 var PUZZLE_COMPONENTS = [
-    __WEBPACK_IMPORTED_MODULE_0__square_square_component__["a" /* SquareComponent */],
-    __WEBPACK_IMPORTED_MODULE_1__row_row_component__["a" /* RowComponent */],
-    __WEBPACK_IMPORTED_MODULE_2__board_board_component__["a" /* BoardComponent */],
-    __WEBPACK_IMPORTED_MODULE_3__toolbar_toolbar_component__["a" /* ToolbarComponent */]
+    __WEBPACK_IMPORTED_MODULE_0__toolbar_toolbar_component__["a" /* ToolbarComponent */]
 ];
-
-
-
-
-
-
 
 
 
@@ -1666,282 +1349,22 @@ var PUZZLE_COMPONENTS = [
 
 /***/ }),
 
-/***/ 74:
-/***/ (function(module, exports) {
-
-//# sourceMappingURL=row-options.interface.js.map
-
-/***/ }),
-
-/***/ 75:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_component__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__row_options_interface__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__row_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__row_options_interface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__index__ = __webpack_require__(19);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RowComponent; });
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var RowComponent = (function (_super) {
-    __extends(RowComponent, _super);
-    function RowComponent() {
-        var _this = _super.call(this) || this;
-        _this.squares = [];
-        _this.squareClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
-        _this.leftClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
-        _this.rightClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
-        return _this;
-    }
-    Object.defineProperty(RowComponent.prototype, "emptySquare", {
-        get: function () {
-            var emptySquares = this.squares.filter(function (square) {
-                return square.isEmpty;
-            });
-            if (emptySquares && emptySquares.length) {
-                return emptySquares[0];
-            }
-            return null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    RowComponent.prototype.ngOnChanges = function (changes) {
-        if (this.options) {
-            this.squares = this.transform(this.options);
-        }
-    };
-    RowComponent.prototype.onSquareClick = function ($event) {
-        this.squareClick.emit([this, $event]);
-    };
-    RowComponent.prototype.onLeftClick = function () {
-        this.shift(true);
-        this.leftClick.emit(this);
-    };
-    RowComponent.prototype.onRightClick = function () {
-        this.shift();
-        this.rightClick.emit(this);
-    };
-    RowComponent.prototype.shift = function (left) {
-        if (left === void 0) { left = false; }
-        if (this.squares && this.squares.length === 8) {
-            if (left) {
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[0], this.squares[1]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[1], this.squares[2]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[2], this.squares[3]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[3], this.squares[4]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[4], this.squares[5]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[5], this.squares[6]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[6], this.squares[7]);
-            }
-            else {
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[7], this.squares[6]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[6], this.squares[5]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[5], this.squares[4]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[4], this.squares[3]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[3], this.squares[2]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[2], this.squares[1]);
-                __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].swap(this.squares[1], this.squares[0]);
-            }
-            this.persist();
-        }
-    };
-    Object.defineProperty(RowComponent.prototype, "database", {
-        get: function () {
-            var stateService = this.options &&
-                this.options.hasOwnProperty('stateService') ? this.options.stateService : null;
-            return stateService ? stateService.databaseService : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    RowComponent.prototype.persist = function () {
-        var _this = this;
-        this.squares.forEach(function (square) {
-            _this.persistSquareOptions(square);
-        });
-    };
-    RowComponent.prototype.isSquarePersisted = function (id) {
-        var databaseService = this.database;
-        if (databaseService) {
-            return databaseService.exists(id);
-        }
-        return false;
-    };
-    RowComponent.prototype.restoreSquareOptions = function (id) {
-        var databaseService = this.database, squareState = null;
-        if (databaseService) {
-            squareState = databaseService.pull(id);
-        }
-        return squareState;
-    };
-    RowComponent.prototype.transform = function (options) {
-        var _this = this;
-        var squares = [];
-        if (options.sequence && options.expectedSequence && options.sequence.length === options.expectedSequence.length) {
-            options.sequence.map(function (num, i) {
-                var colClass = __WEBPACK_IMPORTED_MODULE_3__index__["Utils"].mapColClass(num), squareValue = i < (options.sequence.length - 1) ||
-                    (i < options.sequence.length && !options.isLast) ? num : null, squareIsEmpty = squareValue ? false : true, squareClass = squareValue ? colClass : 'btn empty', squareExpectedValue = options.expectedSequence[i], squareId = 'row-' + options.index + '-square-' + squareExpectedValue, squareRow = options.index, squareCol = i + 1, squareOptions = _this.isSquarePersisted(squareId) ?
-                    _this.restoreSquareOptions(squareId) :
-                    {
-                        id: squareId,
-                        isEmpty: squareIsEmpty,
-                        row: squareRow,
-                        col: squareCol,
-                        value: squareValue,
-                        expectedValue: squareExpectedValue,
-                        cssClass: squareClass
-                    };
-                _this.persistSquareOptions(squareOptions);
-                squares.push(squareOptions);
-                if (squareOptions.isEmpty) {
-                    options.emptySquare = squareOptions;
-                }
-            });
-        }
-        return squares;
-    };
-    RowComponent.prototype.persistSquareOptions = function (options) {
-        var databaseService = this.database;
-        if (databaseService) {
-            databaseService.push(options.id, options);
-        }
-    };
-    return RowComponent;
-}(__WEBPACK_IMPORTED_MODULE_1__base_component__["a" /* BaseComponent */]));
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__row_options_interface__["RowOptionsInterface"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__row_options_interface__["RowOptionsInterface"]) === "function" && _a || Object)
-], RowComponent.prototype, "options", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]) === "function" && _b || Object)
-], RowComponent.prototype, "squareClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]) === "function" && _c || Object)
-], RowComponent.prototype, "leftClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Output */])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]) === "function" && _d || Object)
-], RowComponent.prototype, "rightClick", void 0);
-RowComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* Component */])({
-        selector: 'pz-row',
-        template: __webpack_require__(190),
-        styles: [__webpack_require__(184)],
-    }),
-    __metadata("design:paramtypes", [])
-], RowComponent);
-
-var _a, _b, _c, _d;
-//# sourceMappingURL=row.component.js.map
-
-/***/ }),
-
-/***/ 76:
-/***/ (function(module, exports) {
-
-//# sourceMappingURL=square-options.interface.js.map
-
-/***/ }),
-
-/***/ 77:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__square_options_interface__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__square_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__square_options_interface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_component__ = __webpack_require__(18);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SquareComponent; });
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var SquareComponent = (function (_super) {
-    __extends(SquareComponent, _super);
-    function SquareComponent() {
-        return _super.call(this) || this;
-    }
-    return SquareComponent;
-}(__WEBPACK_IMPORTED_MODULE_2__base_component__["a" /* BaseComponent */]));
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__square_options_interface__["SquareOptionsInterface"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__square_options_interface__["SquareOptionsInterface"]) === "function" && _a || Object)
-], SquareComponent.prototype, "options", void 0);
-SquareComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* Component */])({
-        selector: 'pz-square',
-        template: __webpack_require__(191),
-        styles: [__webpack_require__(185)],
-    }),
-    __metadata("design:paramtypes", [])
-], SquareComponent);
-
-var _a;
-//# sourceMappingURL=square.component.js.map
-
-/***/ }),
-
-/***/ 78:
+/***/ 72:
 /***/ (function(module, exports) {
 
 //# sourceMappingURL=toolbar-options.interface.js.map
 
 /***/ }),
 
-/***/ 79:
+/***/ 73:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_options_interface__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_options_interface__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_options_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__toolbar_options_interface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_component__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_component__ = __webpack_require__(70);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToolbarComponent; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -2094,8 +1517,8 @@ __decorate([
 ToolbarComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* Component */])({
         selector: 'pz-toolbar',
-        template: __webpack_require__(192),
-        styles: [__webpack_require__(186)],
+        template: __webpack_require__(180),
+        styles: [__webpack_require__(177)],
     }),
     __metadata("design:paramtypes", [])
 ], ToolbarComponent);
@@ -2105,7 +1528,7 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ 80:
+/***/ 74:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2147,17 +1570,17 @@ var Board = (function () {
 
 /***/ }),
 
-/***/ 81:
+/***/ 75:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__board_model__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__board_model__ = __webpack_require__(74);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__board_model__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__board_service__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__board_service__ = __webpack_require__(116);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__board_service__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__row_model__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__row_model__ = __webpack_require__(117);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__square_model__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__square_model__ = __webpack_require__(118);
 /* unused harmony namespace reexport */
 
 
@@ -2167,22 +1590,22 @@ var Board = (function () {
 
 /***/ }),
 
-/***/ 82:
+/***/ 76:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__(185);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_record_model__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__base_service__ = __webpack_require__(121);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_record_model__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__base_service__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_share__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_share__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_share__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_index__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_index__ = __webpack_require__(24);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Sqlite3DatabaseService; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -2446,24 +1869,24 @@ Sqlite3DatabaseService = __decorate([
 
 /***/ }),
 
-/***/ 83:
+/***/ 77:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database_sqlite3_database_service__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__board_index__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_local_storage_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state_state_service__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database_sqlite3_database_service__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__board_index__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_local_storage_service__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state_state_service__ = __webpack_require__(78);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return __WEBPACK_IMPORTED_MODULE_2__database_local_storage_service__["a"]; });
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__);
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__["StateService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__["ActionsEnum"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__["Board"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__, "BoardService")) __webpack_require__.d(__webpack_exports__, "BoardService", function() { return __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__["BoardService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__, "ActionsService")) __webpack_require__.d(__webpack_exports__, "ActionsService", function() { return __WEBPACK_IMPORTED_MODULE_4__database_database_service_interface__["ActionsService"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__ = __webpack_require__(121);
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__, "StateService")) __webpack_require__.d(__webpack_exports__, "StateService", function() { return __WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__["StateService"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__, "ActionsEnum")) __webpack_require__.d(__webpack_exports__, "ActionsEnum", function() { return __WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__["ActionsEnum"]; });
 /* harmony namespace reexport (by used) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__, "Board")) __webpack_require__.d(__webpack_exports__, "Board", function() { return __WEBPACK_IMPORTED_MODULE_5__state_state_service_interface__["Board"]; });
@@ -2493,16 +1916,16 @@ var PUZZLE_PROVIDERS = [
 
 /***/ }),
 
-/***/ 84:
+/***/ 78:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_share__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_share__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_share__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__database_local_storage_service__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__database_local_storage_service__ = __webpack_require__(36);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StateService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2551,5 +1974,5 @@ var _a;
 
 /***/ })
 
-},[224]);
+},[212]);
 //# sourceMappingURL=main.bundle.js.map
