@@ -1,15 +1,15 @@
 {
   "static": {
     "urls": {
-      "/index.html": "c7a857696a79a41fbcd080f351d2f208477b595b",
+      "/index.html": "980bf5915214308324caf926c05682a4dc0e0ec9",
       "/package.json": "7da0753e30b49f9ac1e2267ff89c1d0eb2440a52",
       "/worker-basic.min.js": "9fa29c846dc83b45e8bf39592ff87045b6737ed6",
+      "/css/main.css": "5589c51cbdd4999ae9bf794f79db29ab8cd21ec4",
       "/assets/data.json": "4442de734b100da8d244b35d34a355dee4dd9618",
       "/assets/logo.icns": "af0364c906cac79f26c2c0f49b3e271b5253ae94",
       "/assets/logo.ico": "b8c9d485ae3ace0ec9131a83efbea7e9fb1b8b0a",
       "/assets/sixteen.png": "58575cb8cf289bc3f5b0da5792ce0041bbe95886",
-      "/css/main.css": "5589c51cbdd4999ae9bf794f79db29ab8cd21ec4",
-      "/js/app.js": "23b6c8bd1252f137fa1e032589147104dd2ed333",
+      "/js/app.js": "343003199247c5381cdc2ae1ead62fad1be8d9aa",
       "/js/shims.js": "b059624f6d942b777e17f1bb89d8aaa69ff2bd96",
       "/assets/favicon/android-chrome-192x192.png": "6a682492cdcf63f1aa9fa8d5ee47a47f1bf8d95c",
       "/assets/favicon/android-chrome-256x256.png": "c25adf3d84a588c86d66466bdee676689c4fc604",
