@@ -1,15 +1,15 @@
 {
   "static": {
     "urls": {
-      "/index.html": "ea8d8d20d3423596fa380bdaa2a3442ab4bf7b11",
+      "/index.html": "8188470432f15234b3248ff9fda599914337fc3f",
       "/package.json": "7da0753e30b49f9ac1e2267ff89c1d0eb2440a52",
       "/worker-basic.min.js": "9fa29c846dc83b45e8bf39592ff87045b6737ed6",
       "/assets/data.json": "4442de734b100da8d244b35d34a355dee4dd9618",
       "/assets/logo.icns": "af0364c906cac79f26c2c0f49b3e271b5253ae94",
       "/assets/logo.ico": "b8c9d485ae3ace0ec9131a83efbea7e9fb1b8b0a",
       "/assets/sixteen.png": "58575cb8cf289bc3f5b0da5792ce0041bbe95886",
-      "/css/main.css": "5589c51cbdd4999ae9bf794f79db29ab8cd21ec4",
-      "/js/app.js": "b77829097d82990e5ac24ed69164608169330dc4",
+      "/css/main.css": "44d5d5796edd5e957fbfcb8d2ea6bb0c314bc12f",
+      "/js/app.js": "c1e8358d5495a6a037981a0d2de2f9b550101d2c",
       "/js/shims.js": "b059624f6d942b777e17f1bb89d8aaa69ff2bd96",
       "/assets/favicon/android-chrome-192x192.png": "6a682492cdcf63f1aa9fa8d5ee47a47f1bf8d95c",
       "/assets/favicon/android-chrome-256x256.png": "c25adf3d84a588c86d66466bdee676689c4fc604",
@@ -28,7 +28,8 @@
       "/assets/svg/more.svg": "9838cd822e0f989a0befbd365365ee2751bbdebc",
       "/assets/svg/smile.svg": "1504cc699fc1c338565e766ddf773ded3797e7a7",
       "/assets/images/background/about.png": "745c9c0326510c671ddba0ef4e2653bab8a4f9b5",
-      "/assets/images/background/home.png": "f1ec7fa4357f6e7165a33b79b54f5688827f4967"
+      "/assets/images/background/home.png": "f1ec7fa4357f6e7165a33b79b54f5688827f4967",
+      "/assets/images/background/startup.png": "458e6039443391b49144ac807123254ee2c4d915"
     }
   },
   "routing": {
