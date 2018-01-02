@@ -18,18 +18,21 @@ Chicago, IL
 
 ### Issue
 
-[Issue {{issueNumber}}](https://github.com/bradyhouse/house/issues/{{issueNumber}})
+[Issue 208](https://github.com/bradyhouse/house/issues/208)
+
 
 ### Description
 
-Another jQuery Fiddle.
+In an open source unlicensed world, how does one get open source (unlicensed) time series data??? 
+[Alpha Vantage](https://www.alphavantage.co/).  This POC demonstrates how to perform a GET request
+to the Alpha Vantage API. 
 
 
 ### Published Version Link
 
-N/A
+[jsFiddle](https://jsfiddle.net/bradyhouse/p59fbsqL/)
 
 
 ### Tags
 
-jQuery
+jquery, bootswatch, alphavantage
