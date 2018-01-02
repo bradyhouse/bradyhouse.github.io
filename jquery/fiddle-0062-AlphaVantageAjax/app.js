@@ -1,6 +1,28 @@
 (function (app, $, undefined) {
     "use strict";
 
+    app.prettify = function (json) {
+      if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+      }
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'key';
+          } else {
+            cls = 'string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+        } else if (/null/.test(match)) {
+          cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    };
+
     app.request = function() {
       var key = document.getElementById('key').value;
       
@@ -25,9 +47,9 @@
             if (hook) {
               hook.innerHTML = '';
               p.innerHTML = url;
-              pre.innerHTML = JSON.stringify(data);
-              pre.setAttribute('style', 'width: 50; white-space: normal; color: yellow;');
-              p.setAttribute('style', 'color: white;');
+              pre.innerHTML = JSON.stringify(data, null, 2);
+              pre.setAttribute('style', 'font-family: Courier; color: yellow;');
+              p.setAttribute('style', 'font-family: Courier; color: white;');
               hook.appendChild(p);
               hook.appendChild(pre);
             }
