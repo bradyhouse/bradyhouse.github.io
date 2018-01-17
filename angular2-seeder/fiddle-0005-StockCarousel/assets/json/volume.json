@@ -1,0 +1,89 @@
+{
+  "exchangeData": [
+    {
+      "exchangeVols": [
+        {
+          "clearingVol": 0,
+          "floorVol": 0,
+          "globexVol": 386337,
+          "oi": "-",
+          "id": "CBOT",
+          "totalVolume": 386337
+        },
+        {
+          "clearingVol": 0,
+          "floorVol": 0,
+          "globexVol": 1324160,
+          "oi": "-",
+          "id": "CME",
+          "totalVolume": 1324160
+        },
+        {
+          "clearingVol": 0,
+          "floorVol": 0,
+          "globexVol": 998915,
+          "oi": "-",
+          "id": "NYMEX",
+          "totalVolume": 998915
+        }
+      ],
+      "tradeDate": {
+        "timestamp": 1516082400000,
+        "dateOnlyLongFormat": "16 Jan 2018",
+        "default24": "01/16/2018, 00:00:00 CST",
+        "default12": "01/16/2018, 12:00:00 AM CST",
+        "verbose": "January 16, 2018 12:00:00 AM CST"
+      },
+      "volume": {
+        "clearingVol": 0,
+        "floorVol": 0,
+        "globexVol": 2709412,
+        "oi": "-",
+        "totalVolume": 2709412
+      }
+    },
+    {
+      "exchangeVols": [
+        {
+          "clearingVol": 0,
+          "floorVol": 0,
+          "globexVol": 978875,
+          "oi": "-",
+          "id": "CBOT",
+          "totalVolume": 978875
+        },
+        {
+          "clearingVol": 0,
+          "floorVol": 0,
+          "globexVol": 3752297,
+          "oi": "-",
+          "id": "CME",
+          "totalVolume": 3752297
+        },
+        {
+          "clearingVol": 0,
+          "floorVol": 0,
+          "globexVol": 1018482,
+          "oi": "-",
+          "id": "NYMEX",
+          "totalVolume": 1018482
+        }
+      ],
+      "tradeDate": {
+        "timestamp": 1515996000000,
+        "dateOnlyLongFormat": "15 Jan 2018",
+        "default24": "01/15/2018, 00:00:00 CST",
+        "default12": "01/15/2018, 12:00:00 AM CST",
+        "verbose": "January 15, 2018 12:00:00 AM CST"
+      },
+      "volume": {
+        "clearingVol": 0,
+        "floorVol": 0,
+        "globexVol": 5749654,
+        "oi": "-",
+        "totalVolume": 5749654
+      }
+    }
+  ],
+  "timeStamp": "15 Jan 2018 06:03:09 PM"
+}
