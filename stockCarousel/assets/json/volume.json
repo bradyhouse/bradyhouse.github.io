@@ -7,7 +7,7 @@
           "floorVol": 85982,
           "globexVol": 3517427,
           "oi": "-",
-          "id": "CBOT",
+          "id": "ECOT",
           "totalVolume": 3603409
         },
         {
@@ -15,7 +15,7 @@
           "floorVol": 721812,
           "globexVol": 5532799,
           "oi": "-",
-          "id": "CME",
+          "id": "EC",
           "totalVolume": 6254611
         },
         {
@@ -23,7 +23,7 @@
           "floorVol": 0,
           "globexVol": 0,
           "oi": "-",
-          "id": "COMEX",
+          "id": "ECEX",
           "totalVolume": 0
         },
         {
@@ -31,7 +31,7 @@
           "floorVol": 0,
           "globexVol": 2386791,
           "oi": "-",
-          "id": "NYMEX",
+          "id": "ECMEX",
           "totalVolume": 2619487
         }
       ],
@@ -65,7 +65,7 @@
           "floorVol": 0,
           "globexVol": 3396186,
           "oi": 23894341,
-          "id": "NYMEX",
+          "id": "ECMEX",
           "totalVolume": 3691943
         },
         {
@@ -81,7 +81,7 @@
           "floorVol": 1610390,
           "globexVol": 10055145,
           "oi": 65732634,
-          "id": "CME",
+          "id": "EC",
           "totalVolume": 11877459
         },
         {
@@ -89,7 +89,7 @@
           "floorVol": 187869,
           "globexVol": 5070520,
           "oi": 24997712,
-          "id": "CBOT",
+          "id": "ECOT",
           "totalVolume": 5425077
         }
       ],
