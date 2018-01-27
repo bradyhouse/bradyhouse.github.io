@@ -1,0 +1,61 @@
+{
+  "configVersion": 1,
+  "index": "/index.html",
+  "appData": {
+    "test": true
+  },
+  "assetGroups": [
+    {
+      "name": "appshell",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/assets/data.json",
+        "/assets/favicon/favicon-DEV.ico",
+        "/assets/favicon/favicon-PROD.ico",
+        "/assets/svg/more.svg",
+        "/index.html",
+        "/ngsw-worker.js",
+        "/css/main.css",
+        "/js/app.js",
+        "/js/shims.js"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-freshness",
+      "patterns": [
+        "\\/timeline"
+      ],
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": 259200000,
+      "timeoutMs": 60000,
+      "version": 1
+    },
+    {
+      "name": "api-performance",
+      "patterns": [
+        "\\/favorites"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 259200000,
+      "timeoutMs": 60000,
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/index.html": "c61e86634043fce042f55e7aed6b672f62308979",
+    "/ngsw-worker.js": "f41ea28c068e85a641fb71215cf4ab16f2acb023",
+    "/css/main.css": "3b1545bc108085e6b994950639a0077f4634bf9b",
+    "/js/app.js": "364439e702e6fa1d294ff10bdabcde51f2b23678",
+    "/js/shims.js": "dbde6ef2ba4304fc16ea795c5df5e1502c7df939",
+    "/assets/data.json": "4442de734b100da8d244b35d34a355dee4dd9618",
+    "/assets/favicon/favicon-DEV.ico": "aa4fb0706ed367fb5c2fd6bd2b058c0dce8cc785",
+    "/assets/favicon/favicon-PROD.ico": "3ec93fb6e66a776e220d72ee9826f7bf34521303",
+    "/assets/svg/more.svg": "9838cd822e0f989a0befbd365365ee2751bbdebc"
+  }
+}
