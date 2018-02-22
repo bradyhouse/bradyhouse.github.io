@@ -7492,7 +7492,7 @@ a.text-dark:hover {
   font-family: Roboto;
   font-weight: 400;
   color: #484848;
-  font-size: 70%;
+  font-size: 65%;
 }
 
 .cover {
@@ -7562,6 +7562,6 @@ a.text-dark:hover {
 
 @media screen and (min-width:1024px) {
   body {
-    font-size: 130%;
+    font-size: 135%;
   }
 }
