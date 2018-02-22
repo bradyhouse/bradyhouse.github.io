@@ -7492,8 +7492,7 @@ a.text-dark:hover {
   font-family: Roboto;
   font-weight: 400;
   color: #484848;
-  font-size: 65%;
-  margin: 1em;
+  font-size: 70%;
 }
 
 .cover {
@@ -7544,7 +7543,6 @@ a.text-dark:hover {
   width: 9.625em;
   margin-top: .3125em;
   margin-bottom: 1.25em;
-  margin-right: .9375em;
   -webkit-animation: spin 4s linear infinite;
   animation: spin 4s linear infinite;
 }
@@ -7559,5 +7557,11 @@ a.text-dark:hover {
   to {
     -webkit-transform: rotate(1turn);
     transform: rotate(1turn);
+  }
+}
+
+@media screen and (min-width:1024px) {
+  body {
+    font-size: 130%;
   }
 }
