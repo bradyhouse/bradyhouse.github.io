@@ -1,25 +1,10 @@
 
 <html>
     <head>
-        <script>document.write('<base href="' + document.location + '" />');
 
-        const unix_seconds = ((new Date(ts)).getTime()) /1000,
-          f = document.getElementById('frame');
-
-          window.setTimeout(function() {
-            const height = window.innerHeight < 700 ? window.innerHeight : 700,
-            width = window.innerWidth < 320 ? window.innerWidth : 320;
-
-            f.setAttribute('width', width + 'px');
-            f.setAttribute('height', height + 'px');
-            f.reload();
-
-          }, 1000);
-
-        </script>
     </head>
     <body style="background-color: black; text-align: center;">
-        <iframe id="frame" style="border: none; overflow: hidden;" src="index.html?unix_seconds" width="320" height="height"></iframe>
+        <iframe id="frame" style="border: none;" src="index.html?unix_seconds" width="320" height="700"></iframe>
     </body>
 
 </html>
