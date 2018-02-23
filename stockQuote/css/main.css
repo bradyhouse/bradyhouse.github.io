@@ -7489,7 +7489,7 @@ a.text-dark:hover {
   background-image: linear-gradient(#e12b31,#c71c22 60%,#b5191f);
 }
 :root {
-  font-family: Roboto;
+  font-family: Roboto,sans-serif;
   font-weight: 400;
   color: #484848;
   font-size: 60%;
