@@ -1,8 +1,14 @@
 
 <html>
-    <head></head>
+    <head>
+        <script>document.write('<base href="' + document.location + '" />');
+
+        const unix_seconds = ((new Date(ts)).getTime()) /1000;
+
+        </script>
+    </head>
     <body style="background-color: black; text-align: center;">
-        <iframe style="border: none; overflow: hidden;" src="index.html" width="320" height="700"></iframe>
+        <iframe id="frame" style="border: none; overflow: hidden;" src="index.html?unix_seconds" width="320" height="700"></iframe>
     </body>
 
 </html>
