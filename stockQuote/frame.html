@@ -3,12 +3,14 @@
     <head>
         <script>document.write('<base href="' + document.location + '" />');
 
-        const unix_seconds = ((new Date(ts)).getTime()) /1000;
+        const unix_seconds = ((new Date(ts)).getTime()) /1000,
+          height = window.innerHeight < 700 ? window.innerHeight : 700,
+          width = window.innerWidth < 320 ? window.innerWidth : 320;
 
         </script>
     </head>
     <body style="background-color: black; text-align: center;">
-        <iframe id="frame" style="border: none; overflow: hidden;" src="index.html?unix_seconds" width="320" height="700"></iframe>
+        <iframe id="frame" style="border: none; overflow: hidden;" src="index.html?unix_seconds" width="width" height="height"></iframe>
     </body>
 
 </html>
