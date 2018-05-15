@@ -13,22 +13,26 @@
     <link rel="icon" href="assets/favicon/favicon-PROD.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/main.css?1519358559495">
 </head>
-<body><input type="hidden" id="titleOverride" value="Evil Corp Stock"> <input type="hidden" id="symbolOverride"
-                                                                              value="EVC"> <input type="hidden"
-                                                                                                  id="intervalOverride"
-                                                                                                  value="10000"> <input
-        type="hidden" id="passThruProxyUrlOverride" value=""> <input type="hidden" id="quoteUrlOverride"
-                                                                     value="https://pricing.cors.ninja/quote?origin=http://bradyhouse.github.io"> <input
-        type="hidden" id="quoteUsePassThruProxyOverride" value="false"> <input type="hidden"
-                                                                               id="quoteConvertToJsonOverride"
-                                                                               value="false"> <input type="hidden"
-                                                                                                     id="intradayUrlOverride"
-                                                                                                     value="https://pricing.cors.ninja/intraday?origin=http://bradyhouse.github.io">
-<input type="hidden" id="intradayUsePassThruProxyOverride" value="false"> <input type="hidden" id="volumeUrlOverride"
-                                                                                 value="https://pricing.cors.ninja/volume?origin=http://bradyhouse.github.io"> <input
-        type="hidden" id="volumeUrlIsUniqueOverride" value="false"> <input type="hidden"
-                                                                           id="volumeUsePassThruProxyOverride"
-                                                                           value="false">
+<body>
+<input type="hidden" id="titleOverride" value="Evil Corp Stock">
+<input type="hidden" id="symbolOverride" value="EVC">
+<input type="hidden" id="intervalOverride" value="10000">
+<input type="hidden" id="passThruProxyUrlOverride" value="">
+<!-- Quote Data Source Config -->
+<input type="hidden" id="quoteUrlOverride" value="https://witse5y1ak.execute-api.us-east-1.amazonaws.com/prod/quote">
+<!--<input type="hidden" id="quoteUrlOverride" value="assets/json/quote.json">-->
+<input type="hidden" id="quoteUsePassThruProxyOverride" value="false">
+<input type="hidden" id="quoteConvertToJsonOverride" value="false">
+<!-- Line Chart Data Source Confg -->
+<input type="hidden" id="intradayUrlOverride" value="https://witse5y1ak.execute-api.us-east-1.amazonaws.com/prod/intraday">
+<!--<input type="hidden" id="intradayUrlOverride" value="assets/json/intraday.json">-->
+<input type="hidden" id="intradayUsePassThruProxyOverride" value="false">
+<!-- Volume Data Source Config -->
+<input type="hidden" id="volumeUrlOverride" value="https://witse5y1ak.execute-api.us-east-1.amazonaws.com/prod/volume">
+<!--<input type="hidden" id="volumeUrlOverride" value="assets/json/volume.json">-->
+<input type="hidden" id="volumeUrlIsUniqueOverride" value="false">
+<input type="hidden" id="volumeUsePassThruProxyOverride" value="false">
+
 <div class="container-fluid cover preloader">
     <table width="100%" height="100%">
         <tr>
