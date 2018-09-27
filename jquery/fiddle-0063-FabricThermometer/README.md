@@ -1,10 +1,10 @@
-fiddle-0063-FabricJs
+fiddle-0063-FabricThermometer
 ======
 
 
 ### Title
 
-Fabric Thermometer
+Fabric JS Charity Thermometer
 
 
 ### Creation Date
