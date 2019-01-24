@@ -6,7 +6,7 @@
         urls: {
             github: 'https://github.com/bradyhouse/house/blob/master/fiddles/three/fiddle-0024-Eclipse',
             moon: {
-                surfaceMaterial: 'https://github.com/bradyhouse/house/blob/master/fiddles/three/fiddle-0024-Eclipse/resources/images/surfaceMaterial.jpg'
+                surfaceMaterial: 'https://s3.amazonaws.com/brady.house/red-moon.jpg'
             }
         }
     };
