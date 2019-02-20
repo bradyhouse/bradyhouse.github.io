@@ -30,7 +30,7 @@
       }
     },
 
-    write: function (value, days = 1) {
+    write: function (value, days) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
       window.top.document.cookie = this.name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + this.path;
     },
@@ -146,8 +146,8 @@
       this.render(hook);
     },
     frameRedirect: function() {
-      window.setTimeout(() => {
-        window.top.location.assign(window.top.location.origin + window.app.cookies.path);
+      window.setTimeout(function() {
+        window.top.location = window.top.location.origin + window.app.cookies.path;
       }, 1000);
     },
     isTop: function () {
