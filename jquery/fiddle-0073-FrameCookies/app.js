@@ -6,7 +6,7 @@
 
     content: null,
     name: 'fiddle-0073',
-    path: '/jquery/fiddle-0073-FrameCookies/frame.html',
+    path: '/frame.html',
 
     init: function () {
       if (this.exists()) {
