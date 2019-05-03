@@ -41,7 +41,7 @@ module.exports = ".ag-tree-grid {\n  zoom: 150%;\n}\n\n.ag-tree-grid-filter {\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<input class=\"ag-tree-grid-filter\" (keyup)=\"onQuickFilterChanged($event)\" type=\"text\" id=\"quickFilterInput\" placeholder=\"Type text to filter...\"/>\n<div class=\"ag-tree-grid\" [ngStyle]=\"_style\" (window:resize)=\"onResize($event)\">\n  <ag-grid-angular\n    #agGrid\n    style=\"width: 100%; height: 100%;\"\n    id=\"myGrid\"\n    class=\"ag-theme-balham\"\n    [columnDefs]=\"this._columnDefs\"\n    [rowData]=\"this._rowData\"\n    [rowSelection]=\"this._rowSelection\"\n    [groupSelectsChildren]=\"true\"\n    [suppressRowClickSelection]=\"false\"\n    [toolPanelSuppressSideButtons]=\"true\"\n    [animateRows]=\"true\"\n    [defaultColDef]=\"this._defaultColDef\"\n    [autoGroupColumnDef]=\"this._autoGroupColumnDef\"\n    (gridReady)=\"onGridReady($event)\"\n    (selectionChanged)=\"onSelectionChanged($event)\"\n    (rowClicked)=\"onRowClicked($event)\"\n    (rowGroupOpened)=\"onRowGroupOpened($event)\"\n  ></ag-grid-angular>\n</div>\n\n\n"
+module.exports = "\n<input class=\"ag-tree-grid-filter\" (keyup)=\"onQuickFilterChanged($event)\" type=\"text\" id=\"quickFilterInput\" placeholder=\"Type text to filter...\"/>\n<div class=\"ag-tree-grid\" [ngStyle]=\"_style\" (window:resize)=\"onResize($event)\">\n<ag-grid-angular\n    #agGrid\n    style=\"width: 100%; height: 100%;\"\n    id=\"myGrid\"\n    class=\"ag-theme-balham\"\n    [columnDefs]=\"this._columnDefs\"\n    [rowData]=\"this._rowData\"\n    [rowSelection]=\"this._rowSelection\"\n    [groupSelectsChildren]=\"true\"\n    [suppressRowClickSelection]=\"false\"\n    [toolPanelSuppressSideButtons]=\"true\"\n    [animateRows]=\"true\"\n    [defaultColDef]=\"this._defaultColDef\"\n    [autoGroupColumnDef]=\"this._autoGroupColumnDef\"\n    (gridReady)=\"onGridReady($event)\"\n    (selectionChanged)=\"onSelectionChanged($event)\"\n    (rowClicked)=\"onRowClicked($event)\"\n    (rowGroupOpened)=\"onRowGroupOpened($event)\"\n  ></ag-grid-angular>\n</div>\n\n\n"
 
 /***/ }),
 
@@ -522,7 +522,7 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         console.debug(this.constructor.name + '.ngAfterViewInit');
         this._http
-            .get('./assets/data.json')
+            .get('assets/data.json')
             .subscribe(function (data) {
             _this.options.rowData = _this._trunkFactory(data);
             console.clear();
@@ -590,7 +590,7 @@ var AppComponent = /** @class */ (function () {
             var _firstChild = _node_1.allLeafChildren.length > 0 ? _node_1.allLeafChildren[0] : null;
             console.debug('sport = ' + _sport_1);
             console.debug('country = ' + _country_1);
-            return this._http.get('./assets/data.json')
+            return this._http.get('assets/data.json')
                 .toPromise()
                 .then(function (res) {
                 console.debug('fetch > then > res:');
