@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand navbar-dark bg-primary navbar-top\">\n  <div class=\"collapse navbar-collapse\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"navbar-brand\" style=\"font-weight: 700; color: whitesmoke;\">\n        Enterprise AgGrid ~ Chart Control + Series Click Event\n      </li>\n    </ul>\n    <ul class=\"navbar-nav my-2 my-lg-0\">\n      <li class=\"nav-item\">\n        <a class=\"nav-item\" style=\"font-weight: 700; color: whitesmoke;\" alt=\"Fork me on GitHub\" target=\"_blank\" title=\"View Source\"\n           href=\"http://github/bradyhouse/house/fiddles/angular2-cli/fiddle-0029-EntAgGridChartSeriesClick\">\n          Fork Me On Github\n        </a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<app-bar-chart [options]=\"barChartOptions\"\n               (events)=\"onEvents($event)\">\n</app-bar-chart>\n\n"
+module.exports = "<nav class=\"navbar navbar-expand navbar-dark bg-primary navbar-top\">\n  <div class=\"collapse navbar-collapse\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"navbar-brand\" style=\"font-weight: 700; color: whitesmoke;\">\n        Enterprise AgGrid ~ Chart Control + Series Click Event\n      </li>\n    </ul>\n    <ul class=\"navbar-nav my-2 my-lg-0\">\n      <li class=\"nav-item\">\n        <a class=\"nav-item\" style=\"font-weight: 700; color: whitesmoke;\" alt=\"Fork me on GitHub\" target=\"_blank\" title=\"View Source\"\n           href=\"https://github.com/bradyhouse/house/tree/master/fiddles/angular2-cli/fiddle-0029-EntAgGridChartSeriesClick\">\n          Fork Me On Github\n        </a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<app-bar-chart [options]=\"barChartOptions\"\n               (events)=\"onEvents($event)\">\n</app-bar-chart>\n\n"
 
 /***/ }),
 
@@ -67,13 +67,13 @@ module.exports = ".my-tool-tip-class {\n  border: 4px solid black;\n}\n\nspan.ag
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _bar_chart_bar_chart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bar-chart/bar-chart */ "./src/app/bar-chart/bar-chart.ts");
 
 
 
-let AppComponent = class AppComponent {
-    constructor() {
+var AppComponent = /** @class */ (function () {
+    function AppComponent() {
         this.barChartOptions = {
             id: 'fiddle',
             columns: [
@@ -119,43 +119,48 @@ let AppComponent = class AppComponent {
             chartOptions: this.chartOptions
         };
     }
-    onEvents(events) {
+    AppComponent.prototype.onEvents = function (events) {
         switch (events.type) {
             case _bar_chart_bar_chart__WEBPACK_IMPORTED_MODULE_2__["BarChartEventTypeEnum"].seriesNodeClick:
                 alert(JSON.stringify(events.data));
                 break;
         }
-    }
-    get chartOptions() {
-        return {
-            xAxis: {
-                type: 'category',
-                labelFormatter: function (params) {
-                    return params.value === "United Kingdom" ? "UK" : "(" + String(params.value) + ")";
+    };
+    Object.defineProperty(AppComponent.prototype, "chartOptions", {
+        get: function () {
+            return {
+                xAxis: {
+                    type: 'category',
+                    labelFormatter: function (params) {
+                        return params.value === "United Kingdom" ? "UK" : "(" + String(params.value) + ")";
+                    }
+                },
+                yAxis: {
+                    type: 'number',
+                    labelFormatter: function (params) {
+                        return params.value.toString().toUpperCase();
+                    }
+                },
+                legend: {
+                    enabled: false
                 }
-            },
-            yAxis: {
-                type: 'number',
-                labelFormatter: function (params) {
-                    return params.value.toString().toUpperCase();
-                }
-            },
-            legend: {
-                enabled: false
-            }
-        };
-    }
-};
-AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-        selector: 'app-root',
-        template: __webpack_require__(/*! raw-loader!./app.component.html */ "./node_modules/raw-loader/index.js!./src/app/app.component.html"),
-        styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
-    })
-], AppComponent);
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-root',
+            template: __webpack_require__(/*! raw-loader!./app.component.html */ "./node_modules/raw-loader/index.js!./src/app/app.component.html"),
+            styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
+        })
+    ], AppComponent);
+    return AppComponent;
+}());
 
 function createRowData() {
-    let countries = [
+    var countries = [
         "Ireland",
         "Spain",
         "United Kingdom",
@@ -177,7 +182,7 @@ function createRowData() {
         "Uruguay",
         "Belgium"
     ];
-    let rowData = [];
+    var rowData = [];
     countries.forEach(function (country, index) {
         rowData.push({
             country: country,
@@ -203,10 +208,10 @@ function createRowData() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppModule", function() { return AppModule; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm2015/platform-browser.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _bar_chart_bar_chart_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bar-chart/bar-chart.module */ "./src/app/bar-chart/bar-chart.module.ts");
 
@@ -216,22 +221,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let AppModule = class AppModule {
-};
-AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        declarations: [
-            _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]
-        ],
-        imports: [
-            _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
-            _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClientModule"],
-            _bar_chart_bar_chart_module__WEBPACK_IMPORTED_MODULE_6__["BarChartModule"]
-        ],
-        bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
-    })
-], AppModule);
+var AppModule = /** @class */ (function () {
+    function AppModule() {
+    }
+    AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            declarations: [
+                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]
+            ],
+            imports: [
+                _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClientModule"],
+                _bar_chart_bar_chart_module__WEBPACK_IMPORTED_MODULE_6__["BarChartModule"]
+            ],
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
+        })
+    ], AppModule);
+    return AppModule;
+}());
 
 
 
@@ -259,7 +267,7 @@ module.exports = ".outer-div {\n  height:calc(90%) !important;\n  width: calc(10
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BarChartComponent", function() { return BarChartComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var ag_grid_community__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ag-grid-community */ "./node_modules/ag-grid-community/main.js");
@@ -273,112 +281,132 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let BarChartComponent = class BarChartComponent {
+var BarChartComponent = /** @class */ (function () {
     //#endregion
     //#region Constructor
-    constructor(_differs, _elementRef) {
+    function BarChartComponent(_differs, _elementRef) {
+        var _this = this;
         this._differs = _differs;
         this._elementRef = _elementRef;
         this._columnDefs = [];
         this._rowData = [];
-        this._onCreateChartContainer = (chartRef) => this.onCreateChartContainer(chartRef);
-        this._onProcessChartOptions = (params) => this.onProcessChartOptions(params);
+        this._onCreateChartContainer = function (chartRef) { return _this.onCreateChartContainer(chartRef); };
+        this._onProcessChartOptions = function (params) { return _this.onProcessChartOptions(params); };
         this.events = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
     }
-    get _fields() {
-        let values = [];
-        if (this._columnDefs) {
-            this._columnDefs.forEach((colDef) => {
-                if (colDef.field) {
-                    values.push(colDef.field);
-                }
-            });
-        }
-        return values;
-    }
-    get _cellRange() {
-        return {
-            rowStartIndex: 0,
-            rowEndIndex: this._rowData.length - 1,
-            columns: this._fields
-        };
-    }
-    get _isPopulated() {
-        return !!(this._rowData && this._rowData.length && this._columnDefs && this._columnDefs.length);
-    }
-    get _chartRangeParams() {
-        if (this._isPopulated) {
+    Object.defineProperty(BarChartComponent.prototype, "_fields", {
+        get: function () {
+            var values = [];
+            if (this._columnDefs) {
+                this._columnDefs.forEach(function (colDef) {
+                    if (colDef.field) {
+                        values.push(colDef.field);
+                    }
+                });
+            }
+            return values;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BarChartComponent.prototype, "_cellRange", {
+        get: function () {
             return {
-                cellRange: this._cellRange,
-                chartType: ag_grid_community__WEBPACK_IMPORTED_MODULE_3__["ChartType"].GroupedColumn
+                rowStartIndex: 0,
+                rowEndIndex: this._rowData.length - 1,
+                columns: this._fields
             };
-        }
-        else {
-            return null;
-        }
-    }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BarChartComponent.prototype, "_isPopulated", {
+        get: function () {
+            return !!(this._rowData && this._rowData.length && this._columnDefs && this._columnDefs.length);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BarChartComponent.prototype, "_chartRangeParams", {
+        get: function () {
+            if (this._isPopulated) {
+                return {
+                    cellRange: this._cellRange,
+                    chartType: ag_grid_community__WEBPACK_IMPORTED_MODULE_3__["ChartType"].GroupedColumn
+                };
+            }
+            else {
+                return null;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     //#endregion
     //#region OnChanges Implementation
-    ngOnChanges(changes) {
+    BarChartComponent.prototype.ngOnChanges = function (changes) {
         if ('options' in changes) {
-            const value = changes['options'].currentValue;
+            var value = changes['options'].currentValue;
             if (!this._differ && value) {
                 this._differ = this._differs.find(value).create();
             }
         }
-    }
+    };
     //#endregion
     //#region DoCheck Implementation
-    ngDoCheck() {
+    BarChartComponent.prototype.ngDoCheck = function () {
+        var _this = this;
         if (this._differ) {
-            const changes = this._differ.diff(this.options);
+            var changes = this._differ.diff(this.options);
             if (changes) {
-                changes.forEachChangedItem((item) => {
-                    this._applyChange(item);
+                changes.forEachChangedItem(function (item) {
+                    _this._applyChange(item);
                 });
-                changes.forEachAddedItem((item) => {
-                    this._applyChange(item);
+                changes.forEachAddedItem(function (item) {
+                    _this._applyChange(item);
                 });
             }
         }
-    }
+    };
     //#endregion
     //#region OnInit Implementation
-    ngOnInit() {
+    BarChartComponent.prototype.ngOnInit = function () {
         this._containerEl = this._elementRef.nativeElement.querySelector('.chart-wrapper-body');
         this._chartHeight = Math.floor(.90 * window.innerHeight);
-    }
+    };
     //#endregion
     //#region Event Handlers
-    onGridReady(params) {
+    BarChartComponent.prototype.onGridReady = function (params) {
+        var _this = this;
         if (this._id && this._isPopulated && this._containerEl) {
-            setTimeout(() => {
-                params.api.chartRange(this._chartRangeParams);
-                this.events.emit({
+            setTimeout(function () {
+                params.api.chartRange(_this._chartRangeParams);
+                _this.events.emit({
                     type: _bar_chart__WEBPACK_IMPORTED_MODULE_4__["BarChartEventTypeEnum"].ready,
                     data: null
                 });
             }, 500);
         }
-    }
-    onProcessChartOptions(params) {
+    };
+    BarChartComponent.prototype.onProcessChartOptions = function (params) {
         if (this._chartOptions) {
             return lodash__WEBPACK_IMPORTED_MODULE_2__["merge"]({}, params.options, this._chartOptions);
         }
         else {
             return this._defaultChartOptions(params.options);
         }
-    }
-    onCreateChartContainer(chartRef) {
+    };
+    BarChartComponent.prototype.onCreateChartContainer = function (chartRef) {
+        var _this = this;
         if (this._containerEl) {
             this._chartComponent = chartRef.chartElement.__agComponent;
-            chartRef.chartElement.addEventListener('click', ($event) => this.onChartElementClick($event));
+            chartRef.chartElement.addEventListener('click', function ($event) { return _this.onChartElementClick($event); });
             this._containerEl.appendChild(chartRef.chartElement);
         }
-    }
-    onChartElementClick(event) {
+    };
+    BarChartComponent.prototype.onChartElementClick = function (event) {
         if (this._chartComponent) {
-            const seriesNode = this._chartComponent.chartProxy.chart.pickSeriesNode(event.offsetX, event.offsetY);
+            var seriesNode = this._chartComponent.chartProxy.chart.pickSeriesNode(event.offsetX, event.offsetY);
             if (seriesNode) {
                 this.events.emit({
                     type: _bar_chart__WEBPACK_IMPORTED_MODULE_4__["BarChartEventTypeEnum"].seriesNodeClick,
@@ -386,10 +414,10 @@ let BarChartComponent = class BarChartComponent {
                 });
             }
         }
-    }
+    };
     //#endregion
     //#region Internal Methods
-    _defaultChartOptions(options) {
+    BarChartComponent.prototype._defaultChartOptions = function (options) {
         options.height = 500;
         options.width = 1000;
         options.title = {
@@ -495,8 +523,8 @@ let BarChartComponent = class BarChartComponent {
             return "<b>" + xField.toUpperCase() + ":</b> " + x + "<br/><b>" + yField.toUpperCase() + ":</b> " + y;
         };
         return options;
-    }
-    _applyChange(item) {
+    };
+    BarChartComponent.prototype._applyChange = function (item) {
         switch (item.key) {
             case _bar_chart__WEBPACK_IMPORTED_MODULE_4__["BarChartOptionKeysEnum"].id:
                 this._id = this.options.id;
@@ -511,25 +539,26 @@ let BarChartComponent = class BarChartComponent {
                 this._chartOptions = this.options.chartOptions;
                 break;
         }
-    }
-};
-BarChartComponent.ctorParameters = () => [
-    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["KeyValueDiffers"] },
-    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"] }
-];
-tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
-], BarChartComponent.prototype, "options", void 0);
-tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
-], BarChartComponent.prototype, "events", void 0);
-BarChartComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-        selector: 'app-bar-chart',
-        template: __webpack_require__(/*! raw-loader!./bar-chart.component.html */ "./node_modules/raw-loader/index.js!./src/app/bar-chart/bar-chart.component.html"),
-        styles: [__webpack_require__(/*! ./bar-chart.component.css */ "./src/app/bar-chart/bar-chart.component.css")]
-    })
-], BarChartComponent);
+    };
+    BarChartComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["KeyValueDiffers"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"] }
+    ]; };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+    ], BarChartComponent.prototype, "options", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+    ], BarChartComponent.prototype, "events", void 0);
+    BarChartComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-bar-chart',
+            template: __webpack_require__(/*! raw-loader!./bar-chart.component.html */ "./node_modules/raw-loader/index.js!./src/app/bar-chart/bar-chart.component.html"),
+            styles: [__webpack_require__(/*! ./bar-chart.component.css */ "./src/app/bar-chart/bar-chart.component.css")]
+        })
+    ], BarChartComponent);
+    return BarChartComponent;
+}());
 
 
 
@@ -546,8 +575,8 @@ BarChartComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BarChartModule", function() { return BarChartModule; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _bar_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bar-chart.component */ "./src/app/bar-chart/bar-chart.component.ts");
 /* harmony import */ var ag_grid_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ag-grid-angular */ "./node_modules/ag-grid-angular/main.js");
 /* harmony import */ var ag_grid_angular__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(ag_grid_angular__WEBPACK_IMPORTED_MODULE_4__);
@@ -556,19 +585,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let BarChartModule = class BarChartModule {
-};
-BarChartModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        declarations: [_bar_chart_component__WEBPACK_IMPORTED_MODULE_3__["BarChartComponent"]],
-        imports: [
-            _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
-            ag_grid_angular__WEBPACK_IMPORTED_MODULE_4__["AgGridModule"].withComponents([]),
-        ],
-        exports: [_bar_chart_component__WEBPACK_IMPORTED_MODULE_3__["BarChartComponent"]],
-        entryComponents: [_bar_chart_component__WEBPACK_IMPORTED_MODULE_3__["BarChartComponent"]]
-    })
-], BarChartModule);
+var BarChartModule = /** @class */ (function () {
+    function BarChartModule() {
+    }
+    BarChartModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            declarations: [_bar_chart_component__WEBPACK_IMPORTED_MODULE_3__["BarChartComponent"]],
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+                ag_grid_angular__WEBPACK_IMPORTED_MODULE_4__["AgGridModule"].withComponents([]),
+            ],
+            exports: [_bar_chart_component__WEBPACK_IMPORTED_MODULE_3__["BarChartComponent"]],
+            entryComponents: [_bar_chart_component__WEBPACK_IMPORTED_MODULE_3__["BarChartComponent"]]
+        })
+    ], BarChartModule);
+    return BarChartModule;
+}());
 
 
 
@@ -589,21 +621,29 @@ __webpack_require__.r(__webpack_exports__);
 //#endregion
 //#region Enums
 //#region Event Type Enum
-class BarChartEventTypeEnum {
-}
-BarChartEventTypeEnum.seriesNodeClick = 'seriesNodeClick';
-BarChartEventTypeEnum.ready = 'ready';
+var BarChartEventTypeEnum = /** @class */ (function () {
+    function BarChartEventTypeEnum() {
+    }
+    BarChartEventTypeEnum.seriesNodeClick = 'seriesNodeClick';
+    BarChartEventTypeEnum.ready = 'ready';
+    return BarChartEventTypeEnum;
+}());
+
 //#endregion
 //#region Grid Option Key Enum
 /**
  * Enumeration of all options exposed and supported by the grid.
  */
-class BarChartOptionKeysEnum {
-}
-BarChartOptionKeysEnum.id = 'id';
-BarChartOptionKeysEnum.columns = 'columns';
-BarChartOptionKeysEnum.rows = 'rows';
-BarChartOptionKeysEnum.chartOptions = 'chartOptions';
+var BarChartOptionKeysEnum = /** @class */ (function () {
+    function BarChartOptionKeysEnum() {
+    }
+    BarChartOptionKeysEnum.id = 'id';
+    BarChartOptionKeysEnum.columns = 'columns';
+    BarChartOptionKeysEnum.rows = 'rows';
+    BarChartOptionKeysEnum.chartOptions = 'chartOptions';
+    return BarChartOptionKeysEnum;
+}());
+
 //#endregion
 //#endregion
 
@@ -623,7 +663,7 @@ __webpack_require__.r(__webpack_exports__);
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-const environment = {
+var environment = {
     production: false
 };
 /*
@@ -647,8 +687,8 @@ const environment = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm2015/platform-browser-dynamic.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
 /* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.module */ "./src/app/app.module.ts");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./environments/environment */ "./src/environments/environment.ts");
 /* harmony import */ var ag_grid_enterprise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ag-grid-enterprise */ "./node_modules/ag-grid-enterprise/main.js");
@@ -658,15 +698,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-fetch('assets/license.json').then((response) => {
+fetch('assets/license.json').then(function (response) {
     return response.json();
-}).then((data) => {
+}).then(function (data) {
     ag_grid_enterprise__WEBPACK_IMPORTED_MODULE_4__["LicenseManager"].setLicenseKey(data.license);
     if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
     }
     Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])
-        .catch(err => console.error(err));
+        .catch(function (err) { return console.error(err); });
 });
 
 
@@ -685,4 +725,4 @@ module.exports = __webpack_require__(/*! /Users/bradyhouse/github/house_master/f
 /***/ })
 
 },[[0,"runtime","vendor"]]]);
-//# sourceMappingURL=main-es2015.js.map
+//# sourceMappingURL=main-es5.js.map
