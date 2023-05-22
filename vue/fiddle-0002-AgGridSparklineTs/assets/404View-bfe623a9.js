@@ -1,0 +1,1 @@
+import{_ as o}from"./index-920e2ef2.js";import{o as e,c as t}from"./@vue-49a2282a.js";import"./pinia-95208572.js";import"./vue-router-b6acc7cf.js";/* empty css                   */const r={};function c(n,s){return e(),t("h1",null,"Oops, it looks like the page you're looking for doesn't exist.")}const m=o(r,[["render",c]]);export{m as default};
