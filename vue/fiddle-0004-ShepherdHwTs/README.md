@@ -1,4 +1,4 @@
-Sheperd.js Hello World
+Shepherd.js Hello World
 ======
 
 I need a fiddle exploring how to use https://shepherdjs.dev/ with Vue 3.  Assuming this works, the library should (or could ...) be integrated into the Vue JS / TS template projects.  Specifically, another button should be added to the Nav Bar that can be used to kickoff an overlay guided tour.  When the user loads the app for
@@ -79,7 +79,7 @@ npm run lint
 
 ## Published Version Link
 
-N/A
+[StackBlitz](https://stackblitz.com/edit/fiddle-0004-shepherdhw?file=README.md)
 
 
 ## Tags
