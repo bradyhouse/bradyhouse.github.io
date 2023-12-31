@@ -1,18 +1,20 @@
-# fiddle-0008-PlotlyHwJs
+# fiddle-0009-SkeletonLoaderJs
 
-Need to determine the best way to integrate Plotly.js, https://plotly.com/javascript/, with Vue3. Specifically, can it be be imported directly or is a 3rd party wrapper library like vue3-plotlly, https://github.com/clalarco/vue3-plotly,required?
+I need to develop a component that will render an out-of-focus (or blurred) Skeleton version of a Plotly chart prior to loading it. The pre-load (or Skeleton) version should be created from a cached screenshot of the rendered chart. In other words, once a component is mounted for the first time, the component should use Plotly to generate JPEG version of the chart and persist it via Local Storage as a base64 string. The next time the component loads, it first displays the cached image. CSS is then used to make the image appear out of focus and pulsate to indicate that the chart is being loaded.
+
+As a starting point, checkout https://www.freecodecamp.org/news/how-to-build-skeleton-screens-using-css-for-better-user-experience/. Finally, [Vue Fiddle #8](https://github.com/bradyhouse/house/tree/master/fiddles/vue/fiddle-0008-PlotlyHwJs), which includes a working Plotly Chart component, is a good starting point.
 
 ## Creation Date
 
-12-25-23
+12-31-23
 
 ## Location
 
-Scottsdale, AZ
+Chicago, IL
 
 ## Issue
 
-[Issue 1233](https://github.com/bradyhouse/house/issues/1233)
+[Issue 1343](https://github.com/bradyhouse/house/issues/1343)
 
 ## Recommended IDE Setup
 
@@ -73,7 +75,8 @@ npm run lint
 
 ## Published Version Link
 
-[StackBlitz](https://stackblitz.com/edit/vitejs-vite-bedwq4?file=README.md)
+[Stackblitz](https://stackblitz.com/edit/vitejs-vite-ra212v?file=README.md)
+
 
 ## Tags
 
