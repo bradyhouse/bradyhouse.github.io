@@ -99,8 +99,7 @@ npm run lint
 
 ## Published Version Link
 
-- [bradyhouse.github.io](https://bradyhouse.github.io/vue/fiddle-0007-PrintPreviewJs/)
-- [stackblitz.com](https://stackblitz.com/edit/vitejs-vite-u56mtg?file=README.md)
+N/A
 
 
 ## Tags
