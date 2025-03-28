@@ -1,10 +1,7 @@
 fiddle-0017-VeeValidateVueSelectJs
 ======
 
-
-## Title
-
-fiddle-0017-VeeValidateVueSelectJs
+I need a way of integrating Vee-Validate and Vue-Select within a form control. Specifically, I need to create a custom Vee-Validate field component that wraps a bound Vue-Select control. When the user doesn't select a value in the vue-select control, vee-validate should be triggered to display a validation error.
 
 
 ## Creation Date
@@ -19,12 +16,7 @@ Asheville, NC
 
 ## Issue
 
-[Issue {{issueNumber}}](https://github.com/bradyhouse/house/issues/{{issueNumber}})
-
-
-## Description
-
-Another simple Vue fiddle.
+[Issue 2478](https://github.com/bradyhouse/house/issues/2478)
 
 
 ## Recommended IDE Setup
@@ -86,9 +78,10 @@ npm run lint
 
 ## Published Version Link
 
-N/A
+* [bradyhouse.github.io](https://bradyhouse.github.io/vue/fiddle-0017-VeeValidateVueSelectJs/)
+* [stackblitz.com](https://stackblitz.com/edit/vitejs-vite-6gvyr5zq?file=README.md)
 
 
 ## Tags
 
-vue, vue-router, pinia, playwright, rushstack, eslint, prettier, vite, vitest
+vue, vue-router, pinia, playwright, vee-validate, vue-select, eslint, prettier, vite, vitest
