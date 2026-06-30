@@ -1,0 +1,47 @@
+/* fiddle-theme.css — phosphor/CRT skin for fiddle index sub-pages.
+   Loaded AFTER bootstrap + custom.css; overrides them to match the
+   cathode-flavored main landing (bradyhouse.github.io). */
+:root{
+  --phos:#33ff33; --phos-dim:#1f9d1f; --cursor:#80ff80; --phos-bg:#060d06;
+  --ink:#080c08; --panel:#0f160f; --panel-2:#131c13; --line:#1d2a1d;
+  --text:#d7e6d7; --muted:#7f947f;
+  --mono:ui-monospace,"SFMono-Regular","JetBrains Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+html,body{background:var(--ink)!important;color:var(--text)!important;font-family:var(--sans)!important;-webkit-font-smoothing:antialiased}
+/* kill the old chrome */
+#background-carousel,.carousel{display:none!important}
+body > a[href*="bradyhouse/house"]{display:none!important}      /* fork-me ribbon */
+.container.enter-stage-south,.container{max-width:1080px!important;margin:0 auto!important;padding:0 20px!important;width:auto!important}
+.col-lg-12,.row{padding:0!important;margin:0!important;width:auto!important}
+/* phosphor CRT header band */
+.page-header{border:0!important;background:var(--phos-bg)!important;margin:0 -20px 32px!important;
+  padding:50px 20px 42px!important;position:relative;overflow:hidden}
+.page-header::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0,rgba(0,0,0,.2) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply;opacity:.6}
+.page-header::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 95% at 50% 40%,transparent 55%,rgba(0,0,0,.5) 100%)}
+.page-header h1#navbar{color:var(--phos)!important;font-family:var(--mono)!important;font-weight:700!important;
+  font-size:clamp(22px,4vw,36px)!important;letter-spacing:.01em;text-shadow:0 0 7px rgba(51,255,51,.5),0 0 22px rgba(51,255,51,.2);position:relative;z-index:1;margin:0!important}
+.page-header h1#navbar::before{content:"$ ls ~/";color:var(--phos-dim);font-weight:400;margin-right:.4ch}
+.page-header h1#navbar a{color:var(--phos-dim)!important;text-decoration:none!important}
+.page-header h1#navbar a:hover{color:var(--phos)!important}
+.page-header h1#navbar i{color:var(--cursor)!important;font-style:normal!important}
+/* fiddle links -> wrapped chips */
+.bs-component{display:flex!important;flex-wrap:wrap!important;gap:10px!important}
+.bs-component br{display:none!important}
+.bs-component > a{display:inline-block!important;font-family:var(--mono)!important;font-size:13px!important;
+  color:var(--text)!important;background:var(--panel)!important;border:1px solid var(--line)!important;border-radius:10px!important;
+  padding:10px 14px!important;text-decoration:none!important;transition:transform .15s,border-color .15s,color .15s,box-shadow .15s}
+.bs-component > a:hover{border-color:var(--phos-dim)!important;color:var(--phos)!important;background:var(--panel-2)!important;
+  transform:translateY(-2px);box-shadow:0 0 14px rgba(51,255,51,.12)}
+.modal-footer{border:0!important;color:var(--muted)!important;font-family:var(--mono)!important;font-size:12px!important;
+  margin-top:34px!important;padding:18px 0 30px!important;text-align:left!important}
+.modal-footer::before{content:"// ";color:var(--phos-dim)}
+.modal-footer{background:transparent!important;background-color:transparent!important;box-shadow:none!important;border:0!important}
+.bs-component,.well,.panel{background:transparent!important;border:0!important;box-shadow:none!important}
+/* ---- leaf fiddle chrome (h3 title, kill slide-in whitespace, demo links) ---- */
+.enter-stage-south,.enter-stage-right,.enter-stage-north,.enter-stage-west{animation:none!important;opacity:1!important;transform:none!important;margin-top:0!important;top:0!important}
+.page-header h3{color:var(--phos)!important;font-family:var(--mono)!important;font-weight:650!important;font-size:clamp(18px,3vw,26px)!important;text-shadow:0 0 6px rgba(51,255,51,.4);margin:0!important;border:0!important}
+.page-header h3 i{color:var(--cursor)!important;font-style:normal!important}
+.bs-component > p{color:var(--muted)!important}
+.bs-component p a{color:var(--phos)!important;text-decoration:none}

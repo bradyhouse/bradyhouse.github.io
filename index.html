@@ -1,106 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Brady House's UI Portfolio and Samples">
-    <meta name="author" content="bradyhouse@gmail.com">
-    <link rel="shortcut icon" href="favicon.ico" id="favicon"/>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="resources/js/html5shiv.js"></script>
-    <script src="resources/js/respond.min.js"></script>
-    <![endif]-->
-    <title>Brady House UI</title>
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/css/bootstrap.darkly.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="resources/css/custom.css"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Brady House — UI / Front-End Engineer. A suite of published @stratchai npm libraries, a Three.js trading dashboard, the strategy-referee evaluator, and a decade of framework experiments.">
+  <meta name="author" content="bradyhouse@gmail.com">
+  <title>Brady House — UI / Front-End Engineer</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <style>
+    :root{
+      --phos-bg:#060d06; --phos:#33ff33; --phos-dim:#1f9d1f; --cursor:#80ff80;
+      --amber:#ffd060; --blue:#40a0f0;
+      --ink:#080c08; --panel:#0f160f; --panel-2:#131c13; --line:#1d2a1d;
+      --text:#d7e6d7; --muted:#7f947f;
+      --radius:14px; --max:1080px;
+      --mono:ui-monospace,"SFMono-Regular","JetBrains Mono",Menlo,Consolas,monospace;
+      --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+
+    /* ---------- CRT phosphor hero ---------- */
+    .hero{position:relative;background:var(--phos-bg);border-bottom:1px solid var(--line);overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+      background:repeating-linear-gradient(0deg,rgba(0,0,0,.20) 0,rgba(0,0,0,.20) 1px,transparent 1px,transparent 3px);
+      mix-blend-mode:multiply;opacity:.65}
+    .hero::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+      background:radial-gradient(120% 95% at 50% 38%,transparent 52%,rgba(0,0,0,.6) 100%)}
+    .crt{position:relative;z-index:2;max-width:var(--max);margin:0 auto;padding:80px 20px 72px;font-family:var(--mono)}
+    .crt .prompt{color:var(--phos-dim);font-size:13px;letter-spacing:.04em;margin-bottom:6px}
+    .crt h1{color:var(--phos);font-size:clamp(32px,6.4vw,58px);font-weight:700;letter-spacing:.01em;
+      text-shadow:0 0 7px rgba(51,255,51,.55),0 0 24px rgba(51,255,51,.22);margin:0 0 .12em}
+    .crt .role{color:var(--cursor);font-size:clamp(15px,2.4vw,21px)}
+    .crt .role .cursor{display:inline-block;width:.55ch;height:1.05em;vertical-align:-.15em;background:var(--cursor);
+      box-shadow:0 0 8px var(--cursor);animation:blink 1.05s steps(1) infinite;margin-left:.2ch}
+    @keyframes blink{50%{opacity:0}}
+    .crt .tag{color:#c6e9c6;font-family:var(--sans);max-width:64ch;margin-top:16px;font-size:15.5px}
+    .crt .links{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;font-family:var(--sans)}
+    .crt .links a{border:1px solid rgba(51,255,51,.35);color:var(--phos);padding:8px 15px;border-radius:999px;
+      font-size:13.5px;background:rgba(51,255,51,.05);transition:.15s}
+    .crt .links a:hover{background:rgba(51,255,51,.14);border-color:var(--phos)}
+
+    /* ---------- sections ---------- */
+    main{padding:54px 0 24px}
+    .sec{margin-bottom:48px}
+    .sec h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);
+      margin-bottom:16px;display:flex;align-items:center;gap:12px}
+    .sec h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+    /* ---------- library cards ---------- */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:14px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;
+      display:flex;flex-direction:column;gap:8px;transition:transform .16s,border-color .16s,background .16s;position:relative}
+    .card:hover{border-color:var(--phos-dim);transform:translateY(-3px);background:var(--panel-2)}
+    .card .tech{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--phos-dim);text-transform:uppercase}
+    .card h3{font-size:17px;font-weight:650;color:var(--text)}
+    .card p{font-size:13.5px;color:var(--muted);flex:1}
+    .card h3 .stretch{color:inherit}
+    .card h3 .stretch::after{content:"";position:absolute;inset:0;z-index:1;border-radius:var(--radius)}
+    .card:hover h3 .stretch{color:var(--phos)}
+    .card .go{display:flex;gap:16px;margin-top:8px;font-family:var(--mono);font-size:12.5px;position:relative;z-index:2}
+    .card .go a{color:var(--phos);opacity:.92}.card .go a:hover{text-decoration:underline}
+    .card .go a.src{color:var(--muted)}
+    .flagship{grid-column:1/-1;background:linear-gradient(160deg,#0c1d0c,#0a130a);border-color:var(--phos-dim)}
+    .flagship::before{content:"★ FLAGSHIP · ON NPM";position:absolute;top:16px;right:16px;
+      font-family:var(--mono);font-size:10.5px;color:var(--phos);opacity:.85;letter-spacing:.08em}
+    .flagship h3{font-size:23px;color:var(--phos);text-shadow:0 0 10px rgba(51,255,51,.3)}
+    .flagship h3 .stretch{color:var(--phos)}
+    .flagship p{color:#aecdae;max-width:64ch}
+
+    /* ---------- featured project (screenshot + details, side by side) ---------- */
+    .feature{display:grid;grid-template-columns:1.25fr .9fr;background:var(--panel);border:1px solid var(--line);
+      border-radius:var(--radius);overflow:hidden;transition:transform .16s,border-color .16s}
+    .feature:hover{border-color:var(--phos-dim);transform:translateY(-2px)}
+    .feature-shot{display:block;background-color:#05080c;background-size:cover;background-position:top center;
+      min-height:290px;border-right:1px solid var(--line)}
+    .feature-body{padding:28px 30px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+    .feature-body .tech{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--phos-dim);text-transform:uppercase}
+    .feature-body h3{font-size:22px;font-weight:650}
+    .feature-body h3 a:hover{color:var(--phos)}
+    .feature-body p{font-size:14px;color:var(--muted)}
+    .feature-body .go{display:flex;gap:16px;margin-top:6px;font-family:var(--mono);font-size:12.5px}
+    .feature-body .go a{color:var(--phos)}.feature-body .go a.src{color:var(--muted)}
+    .feature-body .go a:hover{text-decoration:underline}
+    @media(max-width:680px){.feature{grid-template-columns:1fr}.feature-shot{min-height:200px;border-right:0;border-bottom:1px solid var(--line)}}
+
+    /* ---------- chips ---------- */
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chips a{font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);
+      padding:6px 13px;border-radius:999px;transition:.15s}
+    .chips a:hover{color:var(--text);border-color:var(--phos-dim)}
+    .note{color:var(--muted);font-size:12.5px;margin-top:12px;font-family:var(--mono)}
+
+    footer{border-top:1px solid var(--line);margin-top:20px;padding:28px 0;color:var(--muted);font-size:13px;
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono)}
+    footer a:hover{color:var(--phos)}
+    @media(max-width:560px){.crt{padding:58px 20px 50px}}
+  </style>
 </head>
 <body>
-<a href="https://github.com/bradyhouse/house" target="_blank"><img
-        style="position: absolute; top: 0; right: 0; border: 0;"
-        src="resources/images/github-link.png"
-        alt="Fork me on GitHub"
-        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
-<div id="background-carousel" class="carousel container slide">
-    <div class="carousel-inner">
-        <div class="active item one"></div>
-        <div class="item two"></div>
-        <div class="item three"></div>
+
+  <header class="hero">
+    <div class="crt">
+      <div class="prompt">brady@house:~ $ whoami</div>
+      <h1>Brady House</h1>
+      <div class="role">UI / Front-End Engineer<span class="cursor"></span></div>
+      <p class="tag">I build UI and ship libraries — a suite of published <code>@stratchai</code> npm packages (from the cathode CRT datagrid to systematic-trading infrastructure) and a decade+ of framework experience.</p>
+      <div class="links">
+        <a href="https://github.com/bradyhouse" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.npmjs.com/org/stratchai" target="_blank" rel="noopener">npm · @stratchai</a>
+        <a href="https://github.com/bradyhouse/house" target="_blank" rel="noopener">house · fiddle.sh</a>
+        <a href="mailto:bradyhouse@gmail.com">Email</a>
+      </div>
     </div>
-</div>
-<div class="container enter-stage-south">
-    <div class="col-lg-12">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-header">
-                    <h1 id="navbar">bradyhouse.io &#160;</h1>
-                </div>
-                <div class="bs-component">
-                    <h4>Frontend <i>Prototypes</i></h4>
-                    <ul>
-                        <li><a href="angular2-cli/index.html">Angular</a></li>
-                        <li><a href="aurelia">Aurelia</a></li>
-                        <li><a href="d3/index.html">D3</a></li>
-                        <li><a href="dojo/index.html">Dojo</a></li>
-                        <li><a href="extjs5/index.html">ExtJS 5</a></li>
-                        <li><a href="extjs6/index.html">ExtJS 6</a></li>
-                        <li><a href="jquery/index.html">Jquery / Straight JS / ES6</a></li>
-                        <li><a href="react/index.html">React</a></li>
-                        <li><a href="vue/index.html">Vue</a></li>
-                        <li><a href="rxjs/index.html">RxJS</a></li>
-                        <li><a href="svg/index.html">SVG</a></li>
-                        <li><a href="three/index.html">three.js</a></li>
-                        <li><a href="tween/index.html">tween.js</a></li>
-                    </ul>
-                    <h4>Stack Side <i>Prototypes</i></h4>
-                    <ul>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/android" title="Collection of Android Fiddles (Github Repo link)">Android</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/ant" title="Collection of Ant Fiddles (Github Repo link)">ANT</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/aws" title="AWS Lecture Notes (Github Repo link)">AWS</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/bash" title="Collection of Bash Fiddles (Github Repo link)">Bash</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/c" title="Collection of C Fiddles (Github Repo link)">C</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/chrome" title="Collection of Chrome Plugin Fiddles (Github Repo link)">Chrome</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/compass" title="Collection of Compass Fiddles (Github Repo link)">Compass</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/electron" title="Collection of Electron Fiddles (Github Repo link)">Electron</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/java" title="Collection of Java Fiddles (Github Repo link)">Java</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/javac" title="Collection of Java Compiler Fiddles (Github Repo link)">Java Compiler</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/meteor" title="Collection of Meteor Framework Fiddles (Github Repo link)">Meteor</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/nativescript" title="Collection of NativeScript Fiddles (Github Repo link)">NativeScript</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/node" title="Collection of Node Fiddles (Github Repo link)">Node</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/php" title="Collection of PHP Fiddles (Github Repo link)">PHP</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/python" title="Collection of Python Fiddles (Github Repo link)">Python</a></li>
-                        <li><a href="http://github.com/bradyhouse/house/tree/master/fiddles/typescript" title="Collection of TypeScript Fiddles (Github Repo link)">TypeScript</a></li>
-                    </ul>
-                    <h4>Frontend Projects</h4>
-                    <ul>
-                        <li><a href="/stockCarousel/frame.html">Angular - Stock Carousel Widget</a></li>
-                        <li><a href="/stockQuote/frame.html">Angular - Stock Quote Widget</a></li>
-                        <li><a href="https://github.com/bradyhouse/15" title="Classic 15 Puzzle">NativeScript + Angular - Puzzle 15 Game (Source Code)</a></li>
-                        <li><a href="https://github.com/bradyhouse/16" title="Virtualized Enipuzzle Puzzle Game (Github Repo)">NativeScript + Angular - Puzzle 16 Game (Source Code)</a></li>
-                        <li><a href="/sixteen/#" title="Virtualized version of Enipuzzle (Online Version)">NativeScript + Angular - Puzzle 16 Game (Online Version)</a></li>
-                        <li><a href="http://mp3-writer.bradyhouse.ninja/" title="Serverless AWS App">AWS Lambda + Polly + S3 - MP3 Writer (Serverless Hello World)</a></li>
-                    </ul>
-                    <h4>Domain Aliases</h4>
-                    <ul>
-                        <li><a href="http://bradyhouse.ai" target="_self" title="Github Public Repos">bradyhouse.ai</a></li>
-                        <li><a href="http://aws.bradyhouse.ai" target="_self" title="AWS Certifications Notes">aws.bradyhouse.ai</a></li>
-                        <li><a href="http://iit.bradyhouse.ai" target="_self" title="icurmt | iit Blog - Assignment and Coursework materials of an Information Technology Management Undergrad @ the Illinois Institute of Technology.">iit.bradyhouse.ai</a></li>
-                        <li><a href="http://fiddle.sh" target="_self" title="fiddle.sh framework poc automation tool (Github Repo)">fiddle.sh</a></li>
-                        <li><a href="http://mp3-writer.bradyhouse.ninja/" title="Serverless Hello World App which utilizes AWS Lambda and Polly" target="_self">mp3-writer.bradyhouse.ninja</a></li>
-                    </ul>
-                </div>
-            </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="sec">
+      <h2>Libraries</h2>
+      <div class="grid">
+        <div class="card flagship">
+          <span class="tech">Vue 3 · TypeScript · npm</span>
+          <h3><a class="stretch" href="cathode/index.html">cathode</a></h3>
+          <p>A retro CRT curved-screen datagrid for the web. Barrel-distorted columns and phosphor theming via pure-CSS 3D fit 10–15% more data per viewport — while text stays real, selectable DOM.</p>
+          <div class="go">
+            <a href="cathode/index.html">live demo →</a>
+            <a class="src" href="https://www.npmjs.com/package/@stratchai/cathode" target="_blank" rel="noopener">npm</a>
+            <a class="src" href="https://github.com/stratchai/cathode" target="_blank" rel="noopener">source</a>
+          </div>
         </div>
-        <div id="BornOnHook" class="modal-footer text-danger">
-            @ Sun Sept 17&nbsp;&nbsp;09:40:10 EDT 2023
+        <div class="card"><span class="tech">TypeScript · npm</span><h3><a class="stretch" href="https://www.npmjs.com/package/@stratchai/indicators" target="_blank" rel="noopener">indicators</a></h3><p>Technical-indicators library for systematic trading — 37 scalar functions + 12 series variants (RSI, MACD, Supertrend, Bollinger…).</p><div class="go"><a href="https://www.npmjs.com/package/@stratchai/indicators" target="_blank" rel="noopener">npm →</a><a class="src" href="https://github.com/stratchai/indicators" target="_blank" rel="noopener">source</a></div></div>
+        <div class="card"><span class="tech">TypeScript · npm</span><h3><a class="stretch" href="https://www.npmjs.com/package/@stratchai/strategy-spec" target="_blank" rel="noopener">strategy-spec</a></h3><p>A declarative strategy-spec language + code generator — compose trading strategies from indicators and rules, emit runnable code.</p><div class="go"><a href="https://www.npmjs.com/package/@stratchai/strategy-spec" target="_blank" rel="noopener">npm →</a><a class="src" href="https://github.com/stratchai/strategy-spec" target="_blank" rel="noopener">source</a></div></div>
+        <div class="card"><span class="tech">TypeScript · npm</span><h3><a class="stretch" href="https://www.npmjs.com/package/@stratchai/backtest" target="_blank" rel="noopener">backtest</a></h3><p>Walk-forward backtesting primitives — cohort loading and out-of-sample validation. Composes with the rest of the @stratchai suite.</p><div class="go"><a href="https://www.npmjs.com/package/@stratchai/backtest" target="_blank" rel="noopener">npm →</a><a class="src" href="https://github.com/stratchai/backtest" target="_blank" rel="noopener">source</a></div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>Latest Projects</h2>
+      <div class="feature">
+        <a class="feature-shot" href="https://strategy-referee.vercel.app/" target="_blank" rel="noopener" style="background-image:url(resources/images/strategy-referee.png)"></a>
+        <div class="feature-body">
+          <span class="tech">Vue · Vercel · MCP · hackathon</span>
+          <h3><a href="https://strategy-referee.vercel.app/" target="_blank" rel="noopener">strategy-referee</a></h3>
+          <p>An anti-hype crypto strategy evaluator: it <em>rejects</em> setups that don't match a narrow, walk-forward-validated edge family, then emits a backtestable spec. Also an agent-invokable MCP skill — built on the @stratchai suite for BNB Hack.</p>
+          <div class="go"><a href="https://strategy-referee.vercel.app/" target="_blank" rel="noopener">live →</a><a class="src" href="https://github.com/bradyhouse/strategy-referee" target="_blank" rel="noopener">source</a></div>
         </div>
-        <script src="resources/js/jquery-1.11.2.js"></script>
-        <script src="resources/js/bootstrap.min.js"></script>
-        <script src="resources/js/carousel.js"></script>
-    </div>
-</div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>Earlier explorations</h2>
+      <div class="chips">
+        <a href="vue/index.html">Vue</a>
+        <a href="react/index.html">React</a>
+        <a href="d3/index.html">D3</a>
+        <a href="three/index.html">three.js</a>
+        <a href="rxjs/index.html">RxJS</a>
+        <a href="svg/index.html">SVG</a>
+        <a href="tween/index.html">tween.js</a>
+        <a href="angular/index.html">Angular</a>
+        <a href="angular2/index.html">Angular 2+</a>
+        <a href="aurelia/index.html">Aurelia</a>
+        <a href="extjs5/index.html">ExtJS 5</a>
+        <a href="jquery/index.html">jQuery / ES6</a>
+      </div>
+      <p class="note">// a decade of "build to learn" — full archive lives in <a href="https://github.com/bradyhouse/house" target="_blank" rel="noopener" style="color:var(--phos-dim)">bradyhouse/house</a></p>
+    </section>
+
+  </main>
+
+  <footer class="wrap">
+    <span>© Brady House — UI / Front-End Engineer</span>
+    <span><a href="https://github.com/bradyhouse" target="_blank" rel="noopener">github.com/bradyhouse</a> · <a href="mailto:bradyhouse@gmail.com">bradyhouse@gmail.com</a></span>
+  </footer>
+
 </body>
 </html>
