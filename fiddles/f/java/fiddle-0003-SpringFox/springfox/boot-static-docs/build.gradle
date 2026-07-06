@@ -1,0 +1,36 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:3.4.4")
+    classpath "org.asciidoctor:asciidoctor-gradle-plugin:1.6.1"
+    classpath 'org.asciidoctor:asciidoctorj-pdf:2.3.23'
+  }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: "org.asciidoctor.convert"
+
+dependencies {
+  compile libs.springBoot
+  compile libs.springfoxPetstore
+  compile libs.springfoxSwagger2
+  compile libs.springfoxSwaggerUi
+  testCompile libs.test
+  testCompile libs.springfoxStaticDocs
+}
+
+def targetDocDir = "${project.buildDir}/asciidoc/generated/swagger_adoc"
+test {
+  systemProperty "asciiDocOutputDir", targetDocDir
+}
+asciidoctor.dependsOn test
+
+asciidoctor {
+  sourceDir = file(targetDocDir)
+  backends = ['html5', 'pdf']
+}

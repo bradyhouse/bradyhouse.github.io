@@ -1,0 +1,30 @@
+{
+  "name": "fiddle",
+  "version": "1.0.0",
+  "description": "fiddle-0039-ResponsiveModalPopUp",
+  "main": "systemjs.config.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "author": "bradyhouse@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "ag-grid": "^18.0.0",
+    "ag-grid-ng2": "^8.0.0",
+    "angular-cli": "^1.0.0-beta.5",
+    "angular2-in-memory-web-api": "0.0.21",
+    "mdi": "^2.0.0"
+  },
+  "dependencies": {
+    "@angular/common": "19.2.22",
+    "@angular/compiler": "20.3.25",
+    "@angular/core": "19.2.20",
+    "@angular/http": "7.2.16",
+    "@angular/platform-browser": "19.2.22",
+    "@angular/platform-browser-dynamic": "19.2.22",
+    "@angular/router": "19.2.22",
+    "jquery": "^3.0.0",
+    "jquery-csv": "^1.0.0",
+    "systemjs": "6.15.1"
+  }
+}
