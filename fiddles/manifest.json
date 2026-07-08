@@ -2957,8 +2957,8 @@
     "name": "fiddle-0003-NoteApp",
     "friendly": "NoteApp",
     "url": "f/chrome/fiddle-0003-NoteApp/",
-    "thumb": "thumbs/chrome__fiddle-0003-NoteApp.png",
-    "live": true,
+    "thumb": null,
+    "live": false,
     "files": [
       "index.html",
       "app.js",
@@ -3424,8 +3424,8 @@
     "name": "fiddle-0024-BarChart",
     "friendly": "BarChart",
     "url": "f/d3/fiddle-0024-BarChart/",
-    "thumb": "thumbs/d3__fiddle-0024-BarChart.png",
-    "live": true,
+    "thumb": null,
+    "live": false,
     "files": [
       "index.html",
       "app.js",
@@ -6743,8 +6743,8 @@
     "name": "fiddle-0040-DropBoxSdk",
     "friendly": "DropBoxSdk",
     "url": "f/node/fiddle-0040-DropBoxSdk/",
-    "thumb": "thumbs/node__fiddle-0040-DropBoxSdk.png",
-    "live": true,
+    "thumb": null,
+    "live": false,
     "files": [
       "index.html",
       "app.js",
@@ -6819,6 +6819,7 @@
     "thumb": null,
     "live": false,
     "files": [
+      "package-lock.json",
       "package.json",
       "README.md",
       "src/data.xml",
@@ -8096,8 +8097,8 @@
     "name": "fiddle-0010-SolarSystem",
     "friendly": "SolarSystem",
     "url": "f/three/fiddle-0010-SolarSystem/",
-    "thumb": "thumbs/three__fiddle-0010-SolarSystem.png",
-    "live": true,
+    "thumb": null,
+    "live": false,
     "files": [
       "index.html",
       "app.js",
@@ -8644,6 +8645,15 @@
     "friendly": "FullScreenExpanderJs",
     "url": "f/vue/fiddle-0019-FullScreenExpanderJs/",
     "thumb": "thumbs/vue__fiddle-0019-FullScreenExpanderJs.png",
+    "live": true,
+    "files": []
+  },
+  {
+    "framework": "vue",
+    "name": "fiddle-0020-TetrisJs",
+    "friendly": "TetrisJs",
+    "url": "f/vue/fiddle-0020-TetrisJs/",
+    "thumb": "thumbs/vue__fiddle-0020-TetrisJs.png",
     "live": true,
     "files": []
   }
