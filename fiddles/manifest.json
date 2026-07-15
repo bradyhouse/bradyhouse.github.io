@@ -1173,6 +1173,29 @@
     ]
   },
   {
+    "framework": "angular",
+    "name": "fiddle-0041-TetrisTs",
+    "friendly": "TetrisTs",
+    "url": "f/angular/fiddle-0041-TetrisTs/",
+    "thumb": "thumbs/angular__fiddle-0041-TetrisTs.png",
+    "live": true,
+    "files": [
+      "README.md"
+    ],
+    "title": "Tetris Ts",
+    "desc": "A fully playable Tetris built with Angular 19 signals — the whole game lives in one signal , driven by a pure TypeScript engine (src/app/engine/tetris.ts) with classic NES scoring (40/100/300/1200 × level+1) and a gravity loop that speeds up per level via an effect. A small signal-based FullscreenService wraps requestFullscreen/webkitRequestFullscreen with graceful fallback messaging, keeping the board centered and playable in fullscreen. Game mechanics ported from the vue fiddle-0020-TetrisJs; the engine is headless-testable with node --test (no karma, no chrome).",
+    "date": "2026-07-15",
+    "tags": [
+      "tetris",
+      "game",
+      "typescript",
+      "fullscreen-api",
+      "dom",
+      "angular",
+      "signals"
+    ]
+  },
+  {
     "framework": "ant",
     "name": "fiddle-0000-Template",
     "friendly": "Template",
@@ -11716,6 +11739,30 @@
     "fork": "fiddle-0018-TetrisEngTs"
   },
   {
+    "framework": "react",
+    "name": "fiddle-0022-TetrisTs",
+    "friendly": "TetrisTs",
+    "url": "f/react/fiddle-0022-TetrisTs/",
+    "thumb": "thumbs/react__fiddle-0022-TetrisTs.png",
+    "live": true,
+    "files": [
+      "README.md"
+    ],
+    "title": "Tetris Ts",
+    "desc": "A fully playable Tetris in React 19 + TypeScript, ported from the vue fiddle-0020-TetrisJs and rebuilt around a pure reducer-style engine driven by useReducer. It scores with the classic NES table (40/100/300/1200 × level+1), levels up every 10 lines with an accelerating gravity tick, and shows score, lines, level, and a next-piece preview in the HUD. A custom useFullscreen hook toggles the game container fullscreen via requestFullscreen() (with the WebKit fallback) and degrades gracefully when the API is unavailable or denied. Arrows move and rotate, Space hard-drops, P pauses; the engine ships with vitest unit tests.",
+    "date": "2026-07-15",
+    "tags": [
+      "tetris",
+      "game",
+      "react",
+      "typescript",
+      "fullscreen-api",
+      "dom",
+      "vite",
+      "vitest"
+    ]
+  },
+  {
     "framework": "rxjs",
     "name": "fiddle-0000-Template",
     "friendly": "Template",
@@ -13940,7 +13987,7 @@
     "name": "fiddle-0019-FullScreenExpanderJs",
     "friendly": "FullScreenExpanderJs",
     "url": "f/vue/fiddle-0019-FullScreenExpanderJs/",
-    "thumb": null,
+    "thumb": "thumbs/vue__fiddle-0019-FullScreenExpanderJs.png",
     "live": true,
     "files": [
       "README.md"
